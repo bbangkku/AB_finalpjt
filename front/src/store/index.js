@@ -143,7 +143,7 @@ export default new Vuex.Store({
           localStorage.setItem("Token", res.data.key);
           dispatch("getUser");
           commit("SAVE_TOKEN", res.data.key);
-          router.push({ name: "ArticleView" });
+          router.push({ name: "article_view" });
         })
         .catch((err) => {
           console.log(err);
@@ -196,7 +196,6 @@ export default new Vuex.Store({
     getDeposit(context) {
       if (!context.state.depositLoaded) {
         axios
-        console.log(DEPOSIT_PRODUCT_URL)
           .get(DEPOSIT_PRODUCT_URL)
           .then((response) => {
             context.commit("SET_DEPOSIT", response.data);

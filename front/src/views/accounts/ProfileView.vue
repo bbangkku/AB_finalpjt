@@ -111,6 +111,7 @@ export default {
     // 프로필 업뎃하기
     updateUserProfile() {
       // Send updated profile data to the API for update
+      console.log('업데이트하자')
       axios({
         method: "patch",
         url: `${API_URL}/accounts/signup`,

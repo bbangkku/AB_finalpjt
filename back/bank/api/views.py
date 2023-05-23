@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from .serializer import *
 import requests
 
+from accounts.models import User
+
 BASE_URL = 'http://finlife.fss.or.kr/'
 API_KEY = settings.API_KEY
 API_URL = 'finlifeapi/depositProductsSearch.json'
@@ -187,3 +189,20 @@ def i_detail(request, product_id):
         except InstallmentProducts.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'Product not found'})
     return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+
+def subscribe(request, user_id):
+    user = User.objects.get(pk=user_id)
+    
+    if user.financial_products.filter(pk=request.user_id).exists():
+        user.financial_products.remove(request.user)
+    else:
+        user.financial_products.add(request.user)
+
+def like(request, user_id):
+    user = User.objects.get(pk=user_id)
+    
+    if user.like_financial_products.filter(pk=request.user_id).exists():
+        user.like_financial_products.remove(request.user)
+    else:
+        user.like_financial_products.add(request.user)

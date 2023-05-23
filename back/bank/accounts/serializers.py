@@ -12,7 +12,7 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'nickname','username', 'gender', 'age', 'money','salary', 'bank','financial_products']
+        fields = ['id', 'nickname','username', 'gender', 'age', 'money','salary', 'bank',]
         extra_kwargs = {'password': {'write_only': True}}
 
 #     def create(self, validated_data):
@@ -80,6 +80,7 @@ class RegisterSerializer(serializers.Serializer):
     salary = serializers.CharField(max_length=15)
     bank = serializers.CharField(max_length=15)
     financial_products = serializers.ListField(child=serializers.IntegerField(), required=False)
+    like_financial_products = serializers.ListField(child=serializers.IntegerField(), required=False)
 
     def validate_username(self, username):
         username = get_adapter().clean_username(username)
@@ -110,6 +111,8 @@ class RegisterSerializer(serializers.Serializer):
             'available_amount': self.validated_data.get('available_amount', ''),
             'bank': self.validated_data.get('bank', ''),
             'financial_products': self.validated_data.get('financial_products', ''),
+            'like_financial_products': self.validated_data.get('like_financial_products', ''),
+    
             }
 
     def save(self, request):

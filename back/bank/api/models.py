@@ -56,4 +56,11 @@ class InstallmentOptions(models.Model):
     save_trm = models.FloatField()
     # 적립 유형명
     rsrv_type_nm = models.TextField()
-    
+
+class Subscribe_Products(models.Model):
+    user_id = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='sdeposit')
+    fin_prdt_cd = models.TextField()
+
+class Like_Products(models.Model):
+    user_id = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='ldeposit')
+    fin_prdt_cd = models.TextField()

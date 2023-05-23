@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from api.models import Subscribe_Products,Like_Products
 class UserManager(BaseUserManager):
     def create_user(self, username, password, **other):
         user = self.model(
@@ -86,7 +87,11 @@ class User(AbstractBaseUser):
     money = models.CharField(max_length=30)
     salary = models.CharField(max_length=10, choices=AMOUNT_CHOICES)
     bank = models.CharField(max_length=10,choices=BANK_CHOICES)
-    financial_products = models.TextField(blank=True, null=True)
+    financial_products = models.ManyToManyField(Subscribe_Products,blank=True, null=True)
+    like_financial_products = models.ManyToManyField(Like_Products,blank=True, null=True)
+
+    
+    
     # superuser fields
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -115,7 +120,8 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         age = data.get("age")
         money = data.get("money")
         salary = data.get("salary")
-        financial_product = data.get("financial_products")
+        financial_products = data.get("financial_products")
+        like_financial_products = data.get("like_financial_products")
 
         bank = data.get("bank")
 
@@ -138,12 +144,19 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             user_field(user, "bank", bank)
         if salary:
             user_field(user, "salary", salary)
-        if financial_product:
+        if financial_products:
             financial_products = user.financial_products.split(',')
-            financial_products.append(financial_product)
+            financial_products.append(financial_products)
             if len(financial_products) > 1:
                 financial_products = ','.join(financial_products)
             user_field(user, "financial_products", financial_products)
+        if like_financial_products:
+            like_financial_products = user.like_financial_products.split(',')
+            like_financial_products.append(like_financial_products)
+            if len(like_financial_products) > 1:
+                like_financial_products = ','.join(like_financial_products)
+            user_field(user, "like_financial_products", like_financial_products)
+
 
         if "password1" in data:
             user.set_password(data["password1"])
