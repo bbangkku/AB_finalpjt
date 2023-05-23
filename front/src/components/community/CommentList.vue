@@ -9,23 +9,20 @@
     </ul> -->
     <div v-for="comment in comments" :key="comment.id">
       <!-- 커멘트에 유저아이디 갖고오는거구현, -->
-      {{ comment }}
       <p>{{ comment.content }}</p>
       <p>유저 : {{ comment.username }}</p>
-      <button
-        @click="editComment(comment)"
-        v-if="isEditing && $store.state.loginUser.username === comment.username"
-      >
-        수정
-      </button>
-      <p v-if="isUserAuthorized">유저권한있</p>
+      <button @click="editComment(comment)"
+        v-if="isEditing && $store.state.loginUser.username === comment.username">수정</button>
+      <button @click="deleteComment(comment)"
+        v-if="isEditing && $store.state.loginUser.username === comment.username">삭제</button>
+
       <hr />
       <input
         type="text"
         v-model="comment.updateContent"
-        v-if="comment.isEditing"
+        v-if="!isEditing && $store.state.loginUser.username === comment.username"
       />
-      <button @click="updateComment(comment)" v-if="comment.isEditing">
+      <button @click="updateComment(comment)" v-if="!isEditing && $store.state.loginUser.username === comment.username">
         확인
       </button>
     </div>
@@ -72,7 +69,8 @@ export default {
   },
   methods: {
     submitComment() {
-      event.preventDefault(); // 기본동작막기
+      // event.preventDefault(); // 기본동작막기
+      console.log('이거되는거야 ?')
       const commentData = {
         username: this.$store.state.loginUser.username,
         article: this.article.id,
@@ -80,7 +78,6 @@ export default {
         content: this.commentContent,
         userid: this.$store.state.userid,
       };
-      console.log(this.$store.state.loginUser.nickname);
       axios({
         method: "post",
         url: `${API_URL}/api/v1/articles/${this.$route.params.id}/comments/`,
@@ -91,7 +88,7 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          this.$router.go(this.$router.currentRoute);
+          // this.$router.go(this.$router.currentRoute);
           // location.reload()
         })
         .catch((err) => {
@@ -106,8 +103,8 @@ export default {
     updateComment(comment) {
       const data = {
         content: comment.updateContent,
+        username: comment.username
       };
-      console.log("asdas", data);
       axios({
         method: "put",
         url: `${API_URL}/api/v1/articles/${this.$route.params.id}/comments/${comment.id}/`,
@@ -116,10 +113,26 @@ export default {
         },
         data: data,
       })
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           comment.content = comment.updateContent;
-          comment.isEditing = false;
+          this.isEditing = true;
+          console.log(comment,'이게커멘튼데')
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    deleteComment(comment) {
+      axios({
+        method: "delete",
+        url: `${API_URL}/api/v1/articles/${this.$route.params.id}/comments/${comment.id}/`,
+        headers: {
+          Authorization: `Token ${this.$store.state.token}`,
+        },
+      })
+        .then((res) => {
+          console.log('댓글삭제',res);
+          this.$router.go(this.$router.currentRoute);
         })
         .catch((err) => {
           console.log(err);

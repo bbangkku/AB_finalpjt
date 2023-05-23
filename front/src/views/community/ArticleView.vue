@@ -3,7 +3,7 @@ ArticleView.vue
 <template>
   <div>
     <h1>커뮤니티</h1>
-    {{ user }}님 안녕하세요
+    {{ $store.state.username }}님 안녕하세요
     <br/>
     <router-link class="nav-link" @click.native="logout" to="#"
       >로그아웃</router-link
