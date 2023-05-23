@@ -1,6 +1,8 @@
 <template>
   <div>
     <div id="exchange">
+      <h5 style="padding:0px 10px 10px 10px; color: grey;">
+            ※ 사용 가능 시간 : 11:00 AM ~ 6:00 PM</h5>
       <!-- 거래 유형 선택 -->
       <div id="mini">
         <select v-model="transactionType" class="pl">
