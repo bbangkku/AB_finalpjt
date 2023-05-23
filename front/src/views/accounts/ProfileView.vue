@@ -105,7 +105,7 @@ export default {
       console.log('asdasdsada',this.$store.state.loginUser)
       if (Object.keys(this.$store.state.loginUser).length === 0) {
         alert("로그인이 필요한 페이지입니다...");
-        this.$router.push({ name: "LogInView" });
+        this.$router.push({ name: "login" });
       }
     },
     // 프로필 업뎃하기

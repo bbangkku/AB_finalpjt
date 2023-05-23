@@ -13,7 +13,7 @@ UpdateView.vue
         <textarea id="content" v-model="form.content"></textarea>
       </div>
       <button type="submit">Update</button>
-      <router-link :to="{ name: 'ArticleDetailView', params: { id: articleId } }">Cancel</router-link>
+      <router-link :to="{ name: 'article_detail', params: { id: articleId } }">Cancel</router-link>
     </form>
   </div>
 </template>
@@ -68,7 +68,7 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          this.$router.push({ name: "ArticleDetailView", params: { id: this.articleId } });
+          this.$router.push({ name: "article_detail", params: { id: this.articleId } });
         })
         .catch((err) => {
           console.log(err);

@@ -49,7 +49,7 @@ export default {
         .then((res) => {
           console.log(res);
 
-          this.$router.push({ name: "ArticleView" });
+          this.$router.push({ name: "article_view" });
         })
         .catch((err) => {
           console.log(err);

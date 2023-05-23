@@ -69,7 +69,7 @@ export default {
           this.getComments(); // 댓글 목록을 다시 가져옴
           location.reload();
           this.$router.replace({
-            name: "ArticleDetailView",
+            name: "article_detail",
             params: { id: this.$route.params.id },
           });
         })

@@ -3,15 +3,17 @@
     <!-- <SlideView @imageClick="handleImageClick" /> -->
     <!-- <img src="@/assets/home.png" alt="" style="width:90%"> -->
     <!-- <v-card> -->
-      <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
+      <v-tabs show-arrows v-model="tab" color="deep-purple-accent-4" align-tabs="center">
         <v-tab to="/">Home</v-tab>
         <v-tab to="/deposit">예금/적금 비교</v-tab>
         <v-tab to="/map">은행찾기</v-tab>
         <v-tab to="/exchange">환율계산기</v-tab>
+        {{$store.state.username}}
         <v-tab to="/community">게시판</v-tab>
         <v-tab to="/profile">프로필</v-tab>
-        <v-tab to="/login" v-if="$store.state.token.length ? false : true">로그인</v-tab>
-        <!-- <v-tab to="/" @click="logout" v-if= !$store.state.token.length ? false : true>로그아웃</v-tab> -->
+        <!--  v-if="$store.state.token.length ? false : true" -->
+        <v-tab to="/login">로그인</v-tab>
+        <!-- <v-tab to="/" @click="logout" v-if= "!$store.state.token.length ? false : true">로그아웃</v-tab> -->
 
       </v-tabs>
       <v-window>
@@ -29,14 +31,17 @@ export default {
   data() {
     return {
       tab: '',
+      loginUser:{},
     };
   },
   components: {
     // SlideView,
   },
-  // methods:{
-  //   store.dispatch('logout')
-  // }
+  methods:{
+    logout(res){
+    console.log(res)
+    this.$store.dispatch('logout')
+  }  }
   
 };
 </script>
