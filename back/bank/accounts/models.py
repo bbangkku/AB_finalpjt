@@ -1,0 +1,158 @@
+from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+class UserManager(BaseUserManager):
+    def create_user(self, username, password, **other):
+        user = self.model(
+        username=username,
+        **other
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    # def create_superuser(self, email, password, **extra_fields):
+    #     """
+    #     Create and save a SuperUser with the given email and password.
+    #     """
+    #     extra_fields.setdefault('is_staff', True)
+    #     extra_fields.setdefault('is_superuser', True)
+    #     extra_fields.setdefault('is_active', True)
+
+    #     if extra_fields.get('is_staff') is not True:
+    #         raise ValueError(_('Superuser must have is_staff=True.'))
+    #     if extra_fields.get('is_superuser') is not True:
+    #         raise ValueError(_('Superuser must have is_superuser=True.'))
+    #     return self.create_user(email, password, **extra_fields)
+
+    def create_superuser(self, username, password=None, **other):
+        user = self.create_user(username, password, **other)
+        user.is_superuser = True
+        user.is_active = True
+        user.is_staff = True
+        user.save(using=self._db)
+        return user
+
+class User(AbstractBaseUser):
+    GENDER_CHOICES = (
+        ('M', '남성'),
+        ('F', '여성'),
+    )
+    AGE_CHOICES = (
+        ('0-10', '0 ~ 10'),
+        ('10-20', '10 ~ 20'),
+        ('20-30', '20 ~ 30'),
+        ('30-40', '30 ~ 40'),
+        ('40-50', '40 ~ 50'),
+        ('50-60', '50 ~ 60'),
+        ('60-70', '60 ~ 70'),
+        ('70-80', '70 ~ 80'),
+    )
+    AMOUNT_CHOICES = (
+        ('0-30M', '0 ~ 30,000,000'),
+        ('30M-100M', '30,000,000 ~ 100,000,000'),
+        ('100M-300M', '100,000,000 ~ 300,000,000'),
+        ('300M-1000M', '300,000,000 ~ 1,000,000,000'),
+    )
+    BANK_CHOICES = (
+        ('KEB하나은행','KEB하나은행'),
+        ('SC제일은행','SC제일은행'),
+        ('국민은행','국민은행'),
+        ('신한은행','신한은행'),
+        ('외환은행','외환은행'),
+        ('우리은행','우리은행'),
+        ('한국시티은행','한국시티은행'),
+        ('경남은행','경남은행'),
+        ('광주은행','광주은행'),
+        ('부산은행','부산은행'),
+        ('전북은행','전북은행'),
+        ('제주은행','제주은행'),
+        ('기업은행','기업은행'),
+        ('농협','농협'),
+        ('수협','SC제일은행'),
+        ('한국산업은행','한국산업은행'),
+        ('한국수출입은행','한국수출입은행'),
+        ('기타','기타')
+    )   
+    # email = models.EmailField(_('email address'), unique=True)
+    USERNAME_FIELD = 'username'
+    # REQUIRED_FIELDS = []
+    email = models.EmailField(max_length=254, blank=True, null=True)
+    objects = UserManager()
+    username = models.CharField(max_length=30,unique=True)
+    nickname = models.CharField(max_length=10)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    age = models.CharField(max_length=5, choices=AGE_CHOICES)
+    money = models.CharField(max_length=30)
+    salary = models.CharField(max_length=10, choices=AMOUNT_CHOICES)
+    bank = models.CharField(max_length=10,choices=BANK_CHOICES)
+    financial_products = models.TextField(blank=True, null=True)
+    # superuser fields
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    
+    
+    def __str__(self): 
+        return self.username
+
+
+# 상속 받아서 구현해보기
+from allauth.account.adapter import DefaultAccountAdapter
+
+class CustomAccountAdapter(DefaultAccountAdapter):
+    def save_user(self, request, user, form, commit=True):
+
+        from allauth.account.utils import user_email, user_field, user_username
+        data = form.cleaned_data
+        first_name = data.get("first_name")
+        last_name = data.get("last_name")
+        email = data.get("email")
+        username = data.get("username")
+        # 나머지 필드
+        nickname = data.get("nickname")
+        gender = data.get("gender")
+        age = data.get("age")
+        money = data.get("money")
+        salary = data.get("salary")
+        financial_product = data.get("financial_products")
+
+        bank = data.get("bank")
+
+        user_email(user, email)
+        user_username(user, username)
+        if first_name:
+            user_field(user, "first_name", first_name)
+        if last_name:
+            user_field(user, "last_name", last_name)
+        # 닉네임 필드 추가
+        if nickname:
+            user_field(user, "nickname", nickname)
+        if gender:
+            user_field(user, "gender", gender)
+        if age:
+            user_field(user, "age", age)
+        if money:
+            user_field(user, "money", money)
+        if bank:
+            user_field(user, "bank", bank)
+        if salary:
+            user_field(user, "salary", salary)
+        if financial_product:
+            financial_products = user.financial_products.split(',')
+            financial_products.append(financial_product)
+            if len(financial_products) > 1:
+                financial_products = ','.join(financial_products)
+            user_field(user, "financial_products", financial_products)
+
+        if "password1" in data:
+            user.set_password(data["password1"])
+        else:
+            user.set_unusable_password()
+            
+        self.populate_username(request, user)
+        if commit:
+            # Ability not to commit makes it easier to derive from
+            # this adapter by adding
+            user.save()
+        return user
