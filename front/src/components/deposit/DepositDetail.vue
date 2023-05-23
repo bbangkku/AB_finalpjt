@@ -1,13 +1,18 @@
 <template>
+  
   <div>
-    <h1>Deposit 상세 페이지</h1>
-    <v-col cols="12" sm="4" md="2">
-      <router-link to="/deposit" id="link_txt">
-        <v-btn block size="x-large" id="btn_style1">
-          돌아가기
-        </v-btn>
-      </router-link>
-    </v-col>
+    <div class="details">
+    <h1>{{ product.fin_prdt_nm }} 상세 페이지</h1>
+    <!-- <v-sheet
+      :class="model"
+      max-width="256"
+      class="mx-auto mt-8"
+      elevation="12"
+      height="128"
+      width="100%"
+      color="black"
+    ></v-sheet>
+    <code class="text-subtitle-1">.{{ model }}</code> -->
 
     <v-card width="900">
       <div class="markbox">
@@ -117,21 +122,33 @@
         </div>
       </div>
 
-      <v-card-title>
-        {{ product.fin_prdt_nm }}
-      </v-card-title>
+      <div class="btngrid">
+        <div style="content-align:right; width:200px; margin-right: 20px">
+        <router-link to="/deposit" id="link_txt">
+          <v-btn block size="x-large" id="btn_style2">
+            돌아가기
+          </v-btn>
+        </router-link>
+      </div>
+      </div>
 
-      <v-card-subtitle>
-        <p>은행명 : {{ product.kor_co_nm }}</p>
-        <p>기타 유의사항 : {{ product.etc_note }}</p>
-        <p>가입대상 : {{ product.join_member }}</p>
-        <p>가입방법 : {{ product.join_way }}</p>
-        <p>우대조건 : {{ product.spcl_cnd }}</p>
-        <p>가입조건 : {{ product.join_deny }}</p>
-        <p>1-제한없음 / 2-서민전용 / 3-일부제한</p>
+
+      <v-card-title >
+     
+      </v-card-title>
+      
+      <v-card-subtitle style="text-align: left;">
+        <h3>은행명 : {{ product.kor_co_nm }}</h3>
+        <h3>가입대상 : {{ product.join_member }}</h3>
+        <h3>가입방법 : {{ product.join_way }}</h3>
+        <h3>우대조건 : {{ product.spcl_cnd }}</h3>
+        <h3>가입조건 : {{ product.join_deny }}</h3>
+        <h4>( 1-제한없음 / 2-서민전용 / 3-일부제한 )</h4>
+        <h3>※ 기타 유의사항 ※</h3>
+        <h3>{{ product.etc_note }}</h3>
       </v-card-subtitle>
-    {{this.$store.state.loginUser.financial_products.length}}
-        <v-btn
+
+      <v-btn
           color="orange-lighten-2"
           variant="text"
           @click="addProduct"
@@ -146,8 +163,13 @@
         >
           해지하기
         </v-btn>
+
         <v-spacer></v-spacer>
     </v-card>
+  </div>
+
+
+   
   </div>
 </template>
 
@@ -195,7 +217,6 @@ export default {
           console.error(error);
         });
     },
-    // {state,commit}, product
     addProduct(){
       const updatedProducts = this.$store.state.loginUser.financial_products
       updatedProducts.push(this.product.fin_prdt_nm)
@@ -215,18 +236,17 @@ export default {
           console.log(err);
         });
     },
-    },
-    
     minusProduct(){
       const updatedProducts = this.$store.state.loginUser.financial_products
       updatedProducts.delete(this.product.fin_prdt_nm)
       this.$store.commit('DELETEPRODUCT',updatedProducts)
-    },    
+    }, 
+    },
 }
 
 </script>
 
-<style>
+<style scoped>
 .v-card--reveal {
   bottom: 0;
   opacity: 1 !important;
@@ -240,6 +260,20 @@ export default {
 
 .markbox{
   padding:20px
+}
+
+h3{
+  margin: 5px;
+}
+.btngrid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: end;
+}
+.details {
+  display: grid;
+  justify-items: center;
 }
 
 </style>

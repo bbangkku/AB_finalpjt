@@ -22,7 +22,7 @@ export default new Vuex.Store({
     depositLoaded: false, // deposit 데이터 로드 상태를 저장하는 변수
     installmentLoaded: false, // installment 데이터 로드 상태를 저장하는 변수
     // 환율
-    exchange: null,
+    exchange: [],
   },
   getters: {
     isLogin(state) {
@@ -222,7 +222,7 @@ export default new Vuex.Store({
     },
     // 환율
     getExch(context) {
-      if (!this.state.exchange) {
+      if (this.state.exchange.length === 0) {
         axios({
           method: "get",
           url: `${API_URL}/exchange/`,

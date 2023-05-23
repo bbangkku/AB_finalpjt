@@ -1,7 +1,7 @@
 <template>
   <div>
     <SlideView @imageClick="handleImageClick" />
-    <v-toolbar>
+    <!-- <v-toolbar>
       <v-toolbar-title>가을 병국 . .</v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -51,7 +51,7 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-    </v-app>
+    </v-app> -->
   <!-- </v-card> -->
   </div>
 </template>

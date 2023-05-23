@@ -1,15 +1,29 @@
 <template>
   <div>
-    <h1>map c</h1>
-    <!-- <div class="controll">
-      <button @click="zoom(-1)"><span id="button1" class="material-symbols-outlined">add_box</span></button>
-      <button @click="zoom(1)"><span class="material-symbols-outlined" id="button1">indeterminate_check_box</span></button>
-    </div> -->
+    <h5 style="padding:0px 10px 10px 10px; color: grey;">
+            주변 은행을 검색해보세요</h5>
 
     <div class="big_map">
       <MapComponent class="kmap" :options="mapOption" ref="mapComponent" />
       <div class="searchbox">
-        <v-text-field
+        <div class="search_bar">
+        <div class="input_box">
+            <input type="text"
+            :loading="loading"
+              density="compact"
+              variant="solo"
+              label="은행 검색"
+              single-line
+              hide-details
+              append-icon="mdi-map-marker"
+              required style="margin: 0;"
+              @keyup.enter="searchBank">
+            <label for="search_bank">&nbsp; &nbsp;&nbsp;은행검색  🔍</label>
+            <span class="span1"></span>
+          </div>
+      </div>
+
+        <!-- <v-text-field
           :loading="loading"
           density="compact"
           variant="solo"
@@ -18,7 +32,9 @@
           single-line
           hide-details
           @keyup.enter="searchBank"
-        ></v-text-field>
+        ></v-text-field> -->
+
+
         <div class="results">
           <div class="place" v-for="rs in search.result" :key="rs.id" @click="showPlace(rs)">
             <h4>{{ rs.place_name }}</h4>

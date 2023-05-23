@@ -11,9 +11,20 @@
 
     <div id="box1">
       <h5 style="padding:0px 10px 10px 10px; color: grey;">※ 상품명 클릭 시 상세페이지로 이동합니다.</h5>
+      
       <div class="search_bar">
-        <!-- <v-card class="mx-auto" color="grey-lighten-3" max-width="500" style="width: 300px; height: 70px; align-items: center;"> -->
-          <v-card-text style="width: 300px; height: 70px; align-items: center; margin-bottom: 10px;">
+        <div class="input_box">
+            <input type="text"
+              v-model="search"
+              label=" &nbsp;&nbsp;은행검색" 
+              id="search_bank"
+              append-icon="mdi-map-marker"
+              required style="margin: 0;">
+            <label for="search_bank">&nbsp; &nbsp;&nbsp;은행검색  🔍</label>
+            <span class="span1"></span>
+          </div>
+        
+          <!-- <v-card-text style="width: 300px; height: 70px; align-items: center; margin-bottom: 10px;">
             <v-text-field
               v-model="search"
               :loading="loading"
@@ -25,7 +36,7 @@
               hide-details
               @click:append-inner="onClick"
             ></v-text-field>
-          </v-card-text>
+          </v-card-text> -->
         <!-- </v-card> -->
       </div>
     </div>
