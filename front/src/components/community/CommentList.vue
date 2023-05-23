@@ -7,14 +7,18 @@
         :comment="comment"
       />
     </ul> -->
+    <!-- {{comments}} -->
     <div v-for="comment in comments" :key="comment.id">
       <!-- 커멘트에 유저아이디 갖고오는거구현, -->
       <p>{{ comment.content }}</p>
       <p>유저 : {{ comment.username }}</p>
-      <button @click="editComment(comment)"
-        v-if="isEditing && $store.state.loginUser.username === comment.username">수정</button>
-      <button @click="deleteComment(comment)"
-        v-if="isEditing && $store.state.loginUser.username === comment.username">삭제</button>
+
+      <form @submit.prevent="editComment(comment)" v-if="isEditing && isUserAuthorized(comment)">
+        <button type="submit">수정</button>
+      </form>
+      <form @submit.prevent="deleteComment(comment)" v-if="isEditing && isUserAuthorized(comment)">
+        <button type="submit">삭제</button>
+      </form>
 
       <hr />
       <input
@@ -22,14 +26,16 @@
         v-model="comment.updateContent"
         v-if="!isEditing && $store.state.loginUser.username === comment.username"
       />
-      <button @click="updateComment(comment)" v-if="!isEditing && $store.state.loginUser.username === comment.username">
-        확인
-      </button>
+
+      <form @submit.prevent="updateComment(comment)" v-if="!isEditing && isUserAuthorized(comment)">
+        <button type="submit">확인</button>
+      </form>
+
     </div>
     <h3>댓글 작성</h3>
-    <form>
+    <form @submit.prevent="submitComment">
       <textarea v-model="commentContent" rows="4" cols="50"></textarea>
-      <button type="submit" @click="submitComment()">댓글 작성</button>
+      <button type="submit">댓글 작성</button>
       <!-- 댓글수정 -->
     </form>
   </div>
@@ -44,33 +50,53 @@ export default {
   data() {
     return {
       article: null,
-      // comment: [], // 댓글 목록
+      comments: [], // 댓글 목록
       commentContent: "", // 댓글 내용
       isEditing: true,
     };
   },
   computed: {
-    isUserAuthorized() {
-      return (
-        this.comment && this.comment.data.user === this.$store.state.userid
-      );
-    },
+
   },
   components: {
     // CommentListItem,
   },
   created() {
-    this.getArticleDetail();
+    this.getArticleDetail()
+    this.getComments()
   },
-  props: {
-    comments: {
-      type: Array,
-    },
-  },
+
   methods: {
+    isUserAuthorized(comment) {
+      console.log(comment)
+      return (
+        comment.username === this.$store.state.loginUser.username
+      );
+    },
+    getComments() {
+      axios({
+        method: "get",
+        url: `${API_URL}/api/v1/articles/${this.$route.params.id}/comments/`,
+        headers: {
+          Authorization: `Token ${this.$store.state.token}`,
+        },
+      })
+        .then((res) => {
+          const comments = res.data;
+          console.log(comments)
+          // console.log("rasdsadad", res.data);
+          // const commentss = comments.map((comment) => {return false} );
+          // console.log(commentss)
+        })
+
+
+        .catch((err) => {
+          console.log(err);
+          
+          this.comments = [];
+        });
+    },
     submitComment() {
-      // event.preventDefault(); // 기본동작막기
-      console.log('이거되는거야 ?')
       const commentData = {
         username: this.$store.state.loginUser.username,
         article: this.article.id,
@@ -80,7 +106,7 @@ export default {
       };
       axios({
         method: "post",
-        url: `${API_URL}/api/v1/articles/${this.$route.params.id}/comments/`,
+        url: `${API_URL}/api/v1/articles/${this.article.id}/comments/`,
         headers: {
           Authorization: `Token ${this.$store.state.token}`,
         },
@@ -88,14 +114,15 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          // this.$router.go(this.$router.currentRoute);
-          // location.reload()
+          this.commentContent = '';
+          this.getComments();
         })
         .catch((err) => {
           console.log(err);
         });
     },
     editComment(comment) {
+      console.log('111112222')
       this.isEditing = false;
       comment.updateContent = comment.content;
       // this.$set(comment, "isEditing", true);
@@ -132,7 +159,9 @@ export default {
       })
         .then((res) => {
           console.log('댓글삭제',res);
-          this.$router.go(this.$router.currentRoute);
+          this.getComments();
+          // 스토어에있는거지우거나, getcomments를하거나
+          // this.$router.go(this.$router.currentRoute);
         })
         .catch((err) => {
           console.log(err);

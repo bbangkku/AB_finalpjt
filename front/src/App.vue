@@ -8,12 +8,11 @@
         <v-tab to="/deposit">예금/적금 비교</v-tab>
         <v-tab to="/map">은행찾기</v-tab>
         <v-tab to="/exchange">환율계산기</v-tab>
-        {{$store.state.username}}
         <v-tab to="/community">게시판</v-tab>
         <v-tab to="/profile">프로필</v-tab>
         <!--  v-if="$store.state.token.length ? false : true" -->
-        <v-tab to="/login">로그인</v-tab>
-        <!-- <v-tab to="/" @click="logout" v-if= "!$store.state.token.length ? false : true">로그아웃</v-tab> -->
+        <v-tab to="/login" v-if="!isLogin">로그인</v-tab>
+        <v-tab @click="logout" v-if="isLogin">로그아웃</v-tab>
 
       </v-tabs>
       <v-window>
@@ -34,16 +33,23 @@ export default {
       loginUser:{},
     };
   },
+  computed:{
+    isLogin(){
+      return this.$store.getters.isLogin
+    }
+  }
+  ,
   components: {
+    
     // SlideView,
   },
   methods:{
-    logout(res){
-    console.log(res)
-    this.$store.dispatch('logout')
-  }  }
-  
-};
+    // 로그아웃
+    logout() {
+      this.$store.dispatch("logout");
+    },
+  }   
+}
 </script>
 
 

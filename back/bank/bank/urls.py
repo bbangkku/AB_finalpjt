@@ -19,10 +19,12 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
+    # path('accounts/', include('accounts.urls')),
+    path('dj-rest-auth/', include('accounts.urls')),
     path('api/v1/', include('articles.urls')),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    
     path('bank_api/', include('api.urls')),
     path('exchange/', include('exchange.urls'))
     

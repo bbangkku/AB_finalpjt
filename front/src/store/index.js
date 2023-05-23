@@ -42,24 +42,10 @@ export default new Vuex.Store({
     // 로그인과 토큰 저장
     SAVE_TOKEN(state, token) {
       state.token = token;
-      axios({
-        method: "get",
-        url: `${API_URL}/dj-rest-auth/user/`,
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          state.username = res.data.username;
-          state.userid = res.data.pk;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
     // 로그아웃
     LOGOUT(state) {
+      state.token = '';    
       state.loginUser = {};
     },
 
@@ -91,6 +77,18 @@ export default new Vuex.Store({
     GET_EXCHANGE(state, data) {
       state.exchange = data;
     },
+    ADDPRODUCT(state,products){
+      state.loginUser.financial_products = products;
+    },
+    LIKEPRODUCT(state,products){
+      state.loginUser.like_financial_products = products;
+    },
+    DELETEPRODUCT(state,products){
+      state.loginUser.financial_products = products;
+    },
+    UNLIKEPRODUCT(state,products){
+      state.loginUser.like_financial_products = products;
+    },
   },
   actions: {
     // 회원가입
@@ -104,6 +102,9 @@ export default new Vuex.Store({
       const nickname = payload.nickname;
       const money = payload.money;
       const bank = payload.bank;
+      const like_product = payload.like_product
+      const product = payload.product
+    
       axios({
         method: "post",
         url: `${API_URL}/dj-rest-auth/registration/`,
@@ -117,6 +118,8 @@ export default new Vuex.Store({
           salary,
           money,
           bank,
+          like_product,
+          product
         },
       })
         .then((res) => {
@@ -140,10 +143,10 @@ export default new Vuex.Store({
         },
       })
         .then((res) => {
-          localStorage.setItem("Token", res.data.key);
-          dispatch("getUser");
+          // localStorage.setItem("Token", res.data.key);
           commit("SAVE_TOKEN", res.data.key);
-          router.push({ name: "article_view" });
+          dispatch("getUser");
+          router.push({ name: "home" });
         })
         .catch((err) => {
           console.log(err);
@@ -159,10 +162,8 @@ export default new Vuex.Store({
         },
       })
         .then((res) => {
-          console.log("이거야 제발", res);
           context.commit("GO_LOGIN", res.data);
-          console.log("sssssssssssssss", JSON.stringify(res.data));
-          localStorage.setItem("login-user", JSON.stringify(res.data));
+          // localStorage.setItem("login-user", JSON.stringify(res.data));
         })
         .catch((err) => {
           console.log(err);
@@ -171,10 +172,10 @@ export default new Vuex.Store({
 
     // 로그아웃
     logout({ commit }) {
-      localStorage.removeItem("Token");
-      localStorage.removeItem("login-user");
+      // localStorage.removeItem("Token");
+      // localStorage.removeItem("login-user");
       commit("LOGOUT");
-      router.push({ name: "LogInView" });
+      router.push({ name: "login" });
     },
 
     // 게시글 가져오기

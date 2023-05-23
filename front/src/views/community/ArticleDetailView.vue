@@ -14,7 +14,7 @@ ArticleDetailView.vue
     <button v-if="isUserAuthorized" @click="updateView">수정</button>
 
     <h2>댓글</h2>
-    <CommentList :comments="comments" />
+    <CommentList/>
     <br />
     <br />
   </div>
@@ -34,15 +34,12 @@ export default {
   data() {
     return {
       article: [],
-      comments: [], // 댓글 목록
       commentContent: "", // 댓글 내용
       isEditing: false,
     };
   },
   created() {
-    console.log(this.$store.state.token);
     this.getArticleDetail();
-    this.getComments();
   },
   computed: {
     isUserAuthorized() {
@@ -94,22 +91,7 @@ export default {
         },
       });
     },
-    getComments() {
-      axios({
-        method: "get",
-        url: `${API_URL}/api/v1/articles/${this.$route.params.id}/comments/`,
-        headers: {
-          Authorization: `Token ${this.$store.state.token}`,
-        },
-      })
-        .then((res) => {
-          console.log("rasdsadad", res.data);
-          this.comments = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+
     // submitComment() {
     //   console.log("12333333제출");
     //   console.log(this.isEditing, "111111111111111");

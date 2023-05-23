@@ -130,24 +130,30 @@
         <p>가입조건 : {{ product.join_deny }}</p>
         <p>1-제한없음 / 2-서민전용 / 3-일부제한</p>
       </v-card-subtitle>
-
+    {{this.$store.state.loginUser.financial_products.length}}
         <v-btn
           color="orange-lighten-2"
           variant="text"
           @click="addProduct"
-          v-if="alreadyProduct.length===0 ? false : true"
         >
           가입하기
         </v-btn>
 
+        <v-btn
+          color="orange-lighten-2"
+          variant="text"
+          @click="minusProduct"
+        >
+          해지하기
+        </v-btn>
         <v-spacer></v-spacer>
     </v-card>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
+import axios from "axios";
+const API_URL = "http://127.0.0.1:8000";
 export default {
   name: 'DepositDetail',
   data() {
@@ -155,7 +161,6 @@ export default {
       product: {},
       reveal: false,
       show: false,
-      alreadyProduct: {}
 
     };
   },
@@ -163,6 +168,19 @@ export default {
     this.productId = this.$route.params.productId;
     this.fetchProductName(this.productId);
   },
+  computed:{
+    isProductIn(){
+      const product = this.$store.state.loginUser.financial_products.find(
+        (item) => item.fin_prdt_nm === this.product.fin_prdt_nm
+      )
+      console.log('product',product)
+      console.log('item',this.fin_prdt_nm)
+      console.log('this',this.product.fin_prdt_nm)
+      // 일치하면 true 아니면 false
+      return !!product
+    }
+  }
+  ,
   methods: {
     fetchProductName(productId) {
       console.log(productId)
@@ -179,20 +197,33 @@ export default {
     },
     // {state,commit}, product
     addProduct(){
-      console.log(this.alreadyProduct,'sssssssss')
-      console.log(this.product.fin_prdt_nm)
-      // const alreadyProduct = this.$store.state.loginUser.financial_products.find(product => )
-      console.log('장바구니',this.$store.state.loginUser.financial_products)
-      // this.alreadyProduct.push(this.product.fin_prdt_nm)
-      console.log('장바구니2',this.alreadyProduct)
+      const updatedProducts = this.$store.state.loginUser.financial_products
+      updatedProducts.push(this.product.fin_prdt_nm)
+      this.$store.commit('ADDPRODUCT',updatedProducts)
+      axios({
+        method: "put",
+        url: `${API_URL}/dj-rest-auth/user/change/`,
+        headers: {
+          Authorization: `Token ${this.$store.state.token}`,
+        },
+        data: updatedProducts,
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    },
+    
+    minusProduct(){
+      const updatedProducts = this.$store.state.loginUser.financial_products
+      updatedProducts.delete(this.product.fin_prdt_nm)
+      this.$store.commit('DELETEPRODUCT',updatedProducts)
+    },    
+}
 
-
-      return{
-
-      }
-    }
-  },
-};
 </script>
 
 <style>

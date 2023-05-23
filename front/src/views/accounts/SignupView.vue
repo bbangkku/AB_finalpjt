@@ -124,7 +124,9 @@ export default {
       gender: '',
       age: '',
       salary: '',
-      bank:''
+      bank:'',
+      like_product:{},
+      product:{},
     };
   },
   methods: {
@@ -143,6 +145,8 @@ export default {
         money: this.money,
         salary: this.salary,
         bank: this.bank,
+        like_product: this.like_product,
+        product: this.product,
       };
         this.$store.dispatch('signUp', payload)
         .then(() => {
