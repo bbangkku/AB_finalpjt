@@ -173,7 +173,7 @@ export default {
   top: 0;
   left: 0;
   height: 600px;
-  z-index: 10000;
+  /* z-index: 10000; */
   background-color: #ffffffaa;
   width: 300px;
   display: flex;

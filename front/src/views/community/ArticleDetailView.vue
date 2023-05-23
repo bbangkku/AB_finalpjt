@@ -1,22 +1,36 @@
 ArticleDetailView.vue
 <template>
   <div>
-    <h1>Detail</h1>
-    <!-- {{this.$store.state.articles}} -->
-    <p>글 번호 : {{ article?.id }}</p>
-    <p>제목 : {{ article?.title }}</p>
-    <p>내용 : {{ article?.content }}</p>
-    <p>작성시간 : {{ article?.created_at }}</p>
-    <p>수정시간 : {{ article?.updated_at }}</p>
-    <hr />
-    <router-link :to="{ name: 'article_view' }">뒤로가기</router-link>
-    <button v-if="isUserAuthorized" @click="deleteArticle">삭제</button>
-    <button v-if="isUserAuthorized" @click="updateView">수정</button>
+    <!-- <h1>Detail</h1> -->
+    <div id="at_box">
+      <!-- {{this.$store.state.articles}} -->
+      <div id="at_box2">
+        <h4>Number : {{ article?.id }}</h4>
+        <router-link :to="{ name: 'article_view' }">
+          <button>뒤로가기</button></router-link>
+      </div>
+      <h2>TITLE : {{ article?.title }}</h2>
+      <hr>
+      <h3>CONTENT </h3>
+      <h4>{{ article?.content }}</h4>
+      <div id="at_box3">
+        <h5>WRITE TIME : {{ article?.created_at }}</h5>
+        <h5>UPDATE TIME : {{ article?.updated_at }}</h5>
+      </div>
+      
+      <button v-if="isUserAuthorized" @click="deleteArticle">삭제</button>
+      <button v-if="isUserAuthorized" @click="updateView">수정</button>
+    </div> 
 
-    <h2>댓글</h2>
-    <CommentList/>
-    <br />
-    <br />
+    <div id="at_box">
+      <h3>COMMENT BOX</h3>
+      <hr>
+      <div>
+        <CommentList/>
+      </div>
+      
+    </div>
+    
   </div>
 </template>
 
@@ -150,3 +164,24 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#at_box{
+  text-align: left;
+  border: 2px solid rgb(250, 213, 132);
+  margin: 15px;
+  padding: 15px;
+  border-radius: 20px;
+}
+#at_box2{
+  display: flex;
+  justify-content: space-between;
+}
+#at_box3{
+  text-align: right;
+}
+
+h3, h2, h4{
+  margin: 10px;
+}
+</style>

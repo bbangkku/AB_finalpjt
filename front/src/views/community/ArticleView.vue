@@ -1,13 +1,16 @@
-ArticleView.vue
-
 <template>
   <div>
-    <h1>커뮤니티</h1>
-    {{ $store.state.loginUser.nickname }}님 안녕하세요
-    <br/>
-    <hr />
+    <h1>COMMUNITY</h1>
+    <!-- {{ $store.state.loginUser.nickname }}님 안녕하세요 -->
+    <div id="c_button">
+      <v-btn rounded="sm" block size="x-large" color="#FFF176">
+        <router-link :to="{ name: 'article_create' }">CREATE</router-link>
+      </v-btn>
+    </div>
     <div>
-      <router-link :to="{ name: 'article_create' }">[CREATE]</router-link>
+      
+        
+          
       <ArticleList />
     </div>
     
@@ -17,6 +20,8 @@ ArticleView.vue
 
 <script>
 import ArticleList from "@/components/community/ArticleList.vue";
+import Swal from 'sweetalert2'
+
 export default {
   name: "ArticleView",
   components: {
@@ -36,18 +41,30 @@ export default {
     this.getArticles();
   },
   methods: {
-    // 게시글 가져오기
-    getArticles() {
-      if (this.isLogin) {
-        this.$store.dispatch("getArticles");
-      } else {
-        alert("로그인이 필요한 페이지입니다...");
+  getArticles() {
+    if (this.isLogin) {
+      this.$store.dispatch("getArticles");
+    } else {
+      Swal.fire({
+        title: "로그인이 필요한 페이지입니다",
+        icon: "error",
+        confirmButtonText: "확인",
+      }).then(() => {
         this.$router.push({ name: "login" });
-      }
-    },
-
+      });
+    }
   },
+}
 };
 </script>
 
-<style></style>
+<style>
+#c_button{
+  width: 100px;
+  display: inline-block;
+  align-content: right;
+  text-align: right;
+  align-self: right;
+  /* float: right; */
+}
+</style>

@@ -23,7 +23,17 @@
         <router-view :key="$route.fullPath"></router-view>
       </v-window>
     </v-card>
+
+    <!-- <div id="aris" v-if="isLogin">
+      <div class="bubble_box">
+        <div class="speech-bubble">
+          <p>{{ this.$store.state.loginUser.nickname }} 용사님 환영합니다!</p>
+        </div>
+      </div>
+      <img src="@/assets/aris1.png" style="width:80%">
+    </div> -->
   </div>
+
 </template>
 
 <script>
@@ -55,6 +65,46 @@ export default {
 
 
 <style>
+#aris {
+  width: 600px;
+  height: 300px;
+  position: fixed;
+  bottom:0;
+  /* left: 0; */
+  right: 0;
+  z-index: 1000000;
+}
+
+.bubble_box{
+  width: 400px;
+}
+
+.speech-bubble {
+  position: relative;
+  display: inline-block;
+  width: 300px;
+  right:-100px;
+  top: 70%;
+  bottom: -20px;
+  padding: 10px;
+  background-color: #c6efff;
+  border-radius: 8px;
+
+}
+
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50px;
+  border-width: 13px;
+  border-style: solid;
+  border-color: #c6efff transparent transparent transparent;
+  /* border: #0a0a0a; */
+}
+
+
+
 body {
   display: flex;
   justify-content: center;
@@ -164,8 +214,10 @@ h1 {
 
 </style>
 <style scoped>
-
 a {
+  background: #fff4b5;
+}
+div.v-tab {
   background: #fff4b5;
 }
 </style>

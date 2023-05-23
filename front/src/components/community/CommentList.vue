@@ -32,9 +32,10 @@
       </form>
 
     </div>
-    <h3>댓글 작성</h3>
+    
     <form @submit.prevent="submitComment">
-      <textarea v-model="commentContent" rows="4" cols="50"></textarea>
+      <input id='r_comment' v-model="commentContent" type="text"
+        placeholder="댓글을 입력해주세요">
       <button type="submit">댓글 작성</button>
       <!-- 댓글수정 -->
     </form>
@@ -189,8 +190,18 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .article-list {
   text-align: start;
+}
+
+#r_comment{
+  width: 60%;
+  height: 40px;
+  text-align: left;
+  border: 2px solid rgb(250, 213, 132);
+  margin: 15px;
+  padding: 15px;
+  border-radius: 20px;
 }
 </style>

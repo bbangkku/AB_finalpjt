@@ -1,45 +1,30 @@
 <template>
   <div>
-    <h1>로그인</h1>
-
-    <div class="mid">
-      <div class="mini">
-        <div class="input_box">
-          <input type="text"
-            id="username"
-            v-model="username"
-            label="ID를 입력하세요" 
-            required
-            style="margin: 0;">
-          <label for="username">username: </label>
-          <span class="span1"></span>
-        </div>
+    <h1>LOGIN</h1>
+    <div id="at_box">
+      <div>
+        <input id='r_comment' v-model="username" type="text"
+        placeholder="ID">
       </div>
+      <input id='r_comment' v-model="password" type="password"
+        placeholder="PASSWORD">
 
-      <div class="mini">
-        <div class="input_box">
-          <input type="password"
-            id="password"
-            v-model="password"
-            label="비밀번호를 입력하세요" 
-            required
-            style="margin: 0;">
-          <label for="password">password: </label>
-          <span class="span1"></span>
-        </div>
+      <div>
+        <v-btn rounded="sm" color="#FFF176">
+          <button @click="login">LOGIN</button>
+        </v-btn>
+        <a class="bold">
+        <router-link :to="{ name: 'signup' }">
+          <v-btn rounded="sm" color="#FFF176">회원가입</v-btn>
+        </router-link>
+      </a>
       </div>
-    </div>
-
-    <div>
-      <button @click="login">로그인</button>
     </div>
 
     <div>
       <a href="#">아이디/비밀번호 찾기 | </a>
-      <a class="bold">
-        <router-link :to="{ name: 'signup' }">회원가입</router-link>
-      </a>
     </div>
+
   </div>
 </template>
 
@@ -70,9 +55,22 @@ export default {
 }
 </script>
 
-<style>
-.mid{
-  display: flex;
-  justify-content: center;
+<style scoped>
+#at_box{
+  /* text-align: left; */
+  border: 2px solid rgb(250, 213, 132);
+  margin: 15px;
+  padding: 15px;
+  border-radius: 20px;
+}
+
+#r_comment{
+  width: 40%;
+  height: 40px;
+  text-align: left;
+  border: 2px solid rgb(250, 213, 132);
+  margin: 15px;
+  padding: 15px;
+  border-radius: 20px;
 }
 </style>

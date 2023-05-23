@@ -1,12 +1,21 @@
 <template>
   <div>
-    <h1>{{ this.$store.state.loginUser.nickname }}의 프로필</h1>
-    <!-- {{ this.$store.state.loginUser }} -->
-    <p>성별: {{ this.$store.state.loginUser.gender }}</p>
-    <p>나이: {{ this.$store.state.loginUser.age }}</p>
-    <p>가능 금액: {{ this.$store.state.loginUser.money }}</p>
-    <p>주거래 은행: {{ this.$store.state.loginUser.bank }}</p>
-    <p>가입상품 : {{ this.$store.state.loginUser.financial_products }} </p>
+    <div id="at_box">
+      <h1>{{ this.$store.state.loginUser.nickname }}님의 프로필</h1>
+      <br>
+      <hr>
+      <div>
+        <h3>성별: {{ this.$store.state.loginUser.gender }}</h3>
+        <h3>나이: {{ this.$store.state.loginUser.age }}</h3>
+        <h3>가능 금액: {{ this.$store.state.loginUser.money }}</h3>
+        <h3>주거래 은행: {{ this.$store.state.loginUser.bank }}</h3>
+        <div v-if="this.$store.state.loginUser.financial_products.length !== 0">
+          <p>가입상품 : {{ this.$store.state.loginUser.financial_products }} </p>
+        </div>
+      </div>
+      
+    </div>
+
     <!-- 추가 정보 및 이미지 등 사용자 프로필에 필요한 항목 표시 -->
     <!-- 프로필 수정 기능을 구현할 수도 있습니다 -->
     <div class="mid">
@@ -74,6 +83,7 @@
 
 <script>
 import axios from "axios";
+import Swal from 'sweetalert2'
 const API_URL = "http://127.0.0.1:8000";
 
 export default {
@@ -102,12 +112,28 @@ export default {
     },
     // 프로필 가져오기
     getProfile() {
-      console.log('asdasdsada',this.$store.state.loginUser)
       if (Object.keys(this.$store.state.loginUser).length === 0) {
-        alert("로그인이 필요한 페이지입니다...");
-        this.$router.push({ name: "login" });
+        Swal.fire({
+          title: "로그인이 필요한 페이지입니다",
+          icon: "error",
+          confirmButtonText: "확인",
+        }).then(() => {
+          this.$router.push({ name: "login" });
+        });
+      } else {
+        // 프로필 가져오기 로직
       }
     },
+
+
+    // getProfile() {
+    //   console.log('asdasdsada',this.$store.state.loginUser)
+    //   if (Object.keys(this.$store.state.loginUser).length === 0) {
+    //     alert("로그인이 필요한 페이지입니다...");
+    //     this.$router.push({ name: "login" });
+    //   }
+    // },
+
     // 프로필 업뎃하기
     updateUserProfile() {
       // Send updated profile data to the API for update
@@ -141,159 +167,18 @@ export default {
 };
 </script>
 
-<style>
-label {
-position: absolute;
-color: #878787;
-left: 50%;
-transform: translateX(-50%);
-font-size: 14px;
-bottom: 8px;
-transition: all .2s;
+<style scoped>
+#at_box{
+  border: 2px solid rgb(250, 213, 132);
+  margin: 30px;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: left;
 }
-
-#box1 {
-  margin: 5px;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 8px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-  cursor: pointer;
-}
-
-#exchange {
-  margin: 10px;
-  display: grid;
-  grid-template-columns: 1fr;
-  height: 200px;
-  justify-items: center;
-}
-
-#mini {
-  height: 40px;
-  margin: 10px;
-  display: grid;
-  grid-template-columns: 1fr;
-  
-}
-
-.header-cell-text {
-  display: inline-block;
-}
-
-.pl{
-    width: 200px;
-    border: 1px solid #C4C4C4;
-    box-sizing: border-box;
-    border-radius: 10px;
-    padding: 12px 13px;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-}
-
-.pl:focus{
-    /* border: 1px solid #e0bc51; */
-    box-sizing: border-box;
-    border-radius: 10px;
-    outline: 4px solid #fff4b5;
-    border-radius: 10px;
-}
-
-.list{
-    border: none;
-    background-color: #FFFFFF;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    padding: 7px 10px;
-    margin: 5px 7px;
-    box-sizing: border-box;
-}
-
-.list:focus{
-    background: #F8E4FF;
-    width: 184px;
-    border-radius: 8px;
-    box-sizing: border-box;
-    text-align: left;
-}
-
-
-/* * {
+h1{
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-} */
-
-.input_box {
-  position: relative;
-  width: 300px;
-  margin-top: 30px;
 }
-
-input {
-  font-size: 15px;
-  color: #222222;
-  width: 200px;
-  border: none;
-  border-bottom: solid #aaaaaa 1px;
-  padding-bottom: 10px;
-  text-align: center;
-  position: relative;
-  background: none;
-  z-index: 5;
-}
-
-input::placeholder { color: #aaaaaa; }
-input:focus { outline: none; }
-
-.span1 {
-  display: block;
-  position: absolute;
-  bottom: 0;
-  left: 50%; 
-  background-color: #666;
-  width: 0;
-  height: 2px;
-  border-radius: 2px;
-  transform: translateX(-50%);
-  transition: 0.3s;
-}
-
-label {
-position: absolute;
-color: #878787;
-left: 50%;
-transform: translateX(-50%);
-font-size: 14px;
-bottom: 8px;
-transition: all .2s;
-}
-
-input:focus ~ label, input:valid ~ label {
-font-size: 15px;
-bottom: 40px;
-color: #666;
-font-weight: bold;
-}
-
-input:focus ~ span, input:valid ~ span {
-width: 100%;
-}
-
-.mid{
-  display: flex;
-  justify-content: center;
+h3{
+  margin: 10px;
 }
 </style>

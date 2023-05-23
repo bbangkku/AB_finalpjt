@@ -1,23 +1,29 @@
-<!-- views/CreateView.vue -->
-
 <template>
   <div>
-    <h1>게시글 작성</h1>
-    <form @submit.prevent="createArticle">
-      <label for="title">제목 : </label>
-      <input type="text" id="title" v-model.trim="title" /><br />
-      <br />
-      <label for="content">내용 : </label>
-      <textarea id="content" cols="30" rows="10" v-model="content"></textarea>
-      <br />
-      <input type="submit" value="작성하기" />
-    </form>
+    <div id="at_box">
+      <h3>게시물을 작성해주세요</h3>
+      <form @submit.prevent="createArticle">
+        <input type="text" id="r_content" v-model.trim="title"
+          placeholder="제목을 입력해주세요" /><br />
+        <br />
+        <textarea id="r_content" cols="30" rows="10" v-model="content"
+        placeholder="내용을 입력해주세요"></textarea>
+
+        <div>
+          <v-btn rounded="sm" color="#FFF176">
+            <button type="submit">CREATE</button>
+          </v-btn>
+        </div>
+          
+        
+        
+      </form>
+      </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-// const API_URL = "http://127.0.0.1:8000";
 
 export default {
   name: "CreateView",
@@ -59,4 +65,27 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+h3{
+  margin: 10px;
+  color: rgb(68, 68, 68);
+}
+
+#at_box{
+  /* text-align: left; */
+  border: 2px solid rgb(250, 213, 132);
+  margin: 15px;
+  padding: 15px;
+  border-radius: 20px;
+}
+
+#r_content{
+  width: 60%;
+  height: 70%;
+  text-align: left;
+  border: 2px solid rgb(250, 213, 132);
+  margin: 5px;
+  padding: 15px;
+  border-radius: 10px;
+}
+</style>
