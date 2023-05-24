@@ -10,14 +10,15 @@ import json
 import pandas as pd
 
 # 회원탈퇴
-@api_view(['POST'])
+@api_view(['DELETE'])
 @permission_classes([IsAuthenticated]) # 인증된 사용자만 권한 허용
 def user_delete(request):
-    request.user.delete()
-    data = {
+    user = User.object.get(id=request.user.id)
+    if user:
+        user.delete()
+        data = {
             'content': f'{request.user}님은 탈퇴하셨군요',
         }
-    
     return Response(data, status=status.HTTP_204_NO_CONTENT)
 
 # @permission_classes([IsAuthenticated]) # 인증된 사용자만 권한 허용
@@ -34,14 +35,24 @@ def userproductget(request,user_pk):
 
 
 # Create your views here.
-@api_view(['POST'])
+@api_view(['PUT'])
 @permission_classes([IsAuthenticated]) # 인증된 사용자만 권한 허용
 def userchange(request):
-    serializer = ProfileSerializer(instance=request.user,data=request.data, partial=True)
-    #   print(serializer,'asdsadsad')
+    user = request.user
+    updated_data = request.data
+    serializer = UserSerializer(user,data=updated_data,partial=True)
     if serializer.is_valid(raise_exception=True):
         serializer.save()
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+
+
+
+
+
 
 
 

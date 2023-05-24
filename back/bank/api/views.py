@@ -197,8 +197,9 @@ def i_detail(request, product_id):
 # 유저가 가입한 상품 조회 및 수정
 
 @api_view(['PUT','POST','DELETE','GET'])
-def userproductchange(request,user_pk,product_pk):
+def userproductchange(request,user_pk,product1_pk):
     user = get_object_or_404(User, pk=user_pk)
+    product = get_object_or_404(DepositProducts,)
     # product = 
     # serializer = UserSerializer(user)
     # return Response(serializer.data)

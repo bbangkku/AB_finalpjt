@@ -36,8 +36,8 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     GENDER_CHOICES = (
-        ('남', '남성'),
-        ('여', '여성'),
+        ('M', '남성'),
+        ('F', '여성'),
     )
     AGE_CHOICES = (
         ('0-10', '0 ~ 10'),
@@ -85,7 +85,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
     username = models.CharField(max_length=30,unique=True)
     nickname = models.CharField(max_length=10)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=3, choices=GENDER_CHOICES)
     age = models.CharField(max_length=5)
     money = models.CharField(max_length=30)
     salary = models.CharField(max_length=10)

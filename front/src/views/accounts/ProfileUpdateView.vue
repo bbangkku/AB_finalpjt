@@ -1,41 +1,32 @@
 <template>
   <div>
-     <!-- 추가 정보 및 이미지 등 사용자 프로필에 필요한 항목 표시 -->
-    <!-- 프로필 수정 기능을 구현할 수도 있습니다 -->
+    <h3>회원정보 수정</h3>
     <div class="mid">
-
-        <!-- <form @submit.prevent="updateArticle">
-      <div>
-        <label for="title">Title:</label>
-        <input type="text" id="title" v-model="form.title" />
-      </div>
-      <div>
-        <label for="content">Content:</label>
-        <textarea id="content" v-model="form.content"></textarea>
-      </div>
-      <button type="submit">Update</button>
-      <router-link :to="{ name: 'article_detail', params: { id: articleId } }">Cancel</router-link>
-    </form> -->
-      <!-- <button @click="checkProfile">프로필 수정하기</button> -->
       <form @submit.prevent="updateUserProfile">
         <div class="mini">
           <div class="input_box">
-            <input type="textr" id="nickname" v-model="updatedProfile.nickname"  required style="margin: 0;">
+            <input
+              type="text"
+              id="nickname"
+              v-model="nickname"
+              required
+              style="margin: 0"
+            />
             <label for="nickname">닉네임</label>
             <span class="span1"></span>
           </div>
         </div>
 
         <div id="mini">
-          <select v-model="updatedProfile.gender" class="pl">
+          <select v-model="gender" class="pl">
             <option disabled value="">성별</option>
-            <option value="M">남성</option>
-            <option value="F">여성</option>
+            <option value="M">남</option>
+            <option value="F">여</option>
           </select>
         </div>
 
         <div id="mini">
-          <select id="age" v-model="updatedProfile.age" class="pl">
+          <select id="age" v-model="age" class="pl">
             <option disabled value="">나이</option>
             <option value="0-10">0 ~ 10</option>
             <option value="10-20">10 ~ 20</option>
@@ -47,9 +38,17 @@
             <option value="70-80">70 ~ 80</option>
           </select>
         </div>
+        <div>
+          <input
+            id="r_comment"
+            v-model="salary"
+            type="number"
+            placeholder="SALARY"
+          />
+        </div>
 
         <div id="mini">
-          <select id="available_amount" v-model="updatedProfile.available_amount" class="pl">
+          <select id="money" v-model="money" class="pl">
             <option disabled value="">가용 금액</option>
             <option value="0-30M">0 ~ 30,000,000</option>
             <option value="30M-100M">30,000,000 ~ 100,000,000</option>
@@ -59,7 +58,7 @@
         </div>
 
         <div id="mini">
-          <select id="bank" v-model="updatedProfile.bank" class="pl"> 
+          <select id="bank" v-model="bank" class="pl">
             <option disabled value="">주거래 은행</option>
             <option value="KEB하나은행">KEB하나은행</option>
             <option value="SC제일은행">SC제일은행</option>
@@ -69,13 +68,12 @@
             <option value="우리은행">우리은행</option>
             <option value="한국시티은행">한국시티은행</option>
             <option value="경남은행">경남은행</option>
-            <!-- 주거래 은행 선택 옵션 추가 -->
           </select>
         </div>
         <button type="submit">프로필 수정</button>
       </form>
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -87,42 +85,48 @@ export default {
   name: "ProfileUpdateView",
   data() {
     return {
-      updatedProfile: {
-        nickname: "",
-        gender: "",
-        age: "",
-        money: "",
-        bank: "",
-        check: ""
-      }
-      }
-
+      nickname: this.$store.state.loginUser.nickname,
+      gender: this.$store.state.loginUser.gender,
+      age: this.$store.state.loginUser.age,
+      money: this.$store.state.loginUser.money,
+      bank: this.$store.state.loginUser.bank,
+      salary: this.$store.state.loginUser.salary,
+    };
   },
-  created() {
-  },
+  created() {},
   methods: {
+    // 프로필 업뎃하기
     updateUserProfile() {
-      // Send updated profile data to the API for update
+      const nickname = this.nickname;
+      const gender = this.gender;
+      const age = this.age;
+      const money = this.money;
+      const bank = this.bank;
+      const salary = this.salary;
       axios({
         method: "put",
-        url: `${API_URL}/dj-rest-auth/login/change`,
+        url: `${API_URL}/dj-rest-auth/user/change/`,
         headers: {
           Authorization: `Token ${this.$store.state.token}`,
         },
-        data: this.updatedProfile,
+        data: {
+          nickname,
+          gender,
+          age,
+          money,
+          bank,
+          salary,
+        },
       })
         .then((res) => {
           console.log(res);
-          // Update the local profile data with the updated values
-          this.profile = res.data;
-          // Reset the updatedProfile object
-          this.updatedProfile = {
-            nickname: "",
-            gender: "",
-            age: "",
-            available_amount: "",
-            bank: "",
-          };
+          this.$store.state.loginUser.nickname = this.nickname;
+          this.$store.state.loginUser.gender = this.gender;
+          this.$store.state.loginUser.age = this.age;
+          this.$store.state.loginUser.money = this.money;
+          this.$store.state.loginUser.bank = this.bank;
+          this.$store.state.loginUser.salary = this.salary;
+          this.$router.push({ name: "profile" });
         })
         .catch((error) => {
           console.log(error);
@@ -133,17 +137,17 @@ export default {
 </script>
 
 <style scoped>
-#at_box{
+#at_box {
   border: 2px solid rgb(250, 213, 132);
   margin: 30px;
   padding: 20px;
   border-radius: 20px;
   text-align: left;
 }
-h1{
+h1 {
   margin: 0;
 }
-h3{
+h3 {
   margin: 10px;
 }
 </style>

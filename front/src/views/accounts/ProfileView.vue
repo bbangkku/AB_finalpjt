@@ -2,50 +2,56 @@
   <div>
     <div id="at_box">
       <h1>{{ this.$store.state.loginUser.nickname }}님의 프로필</h1>
-      <br>
+      <br />
       <div>
         <h3>성별: {{ this.$store.state.loginUser.gender }}</h3>
         <h3>나이: {{ this.$store.state.loginUser.age }}</h3>
-        <h3>가능 금액: {{ this.$store.state.loginUser.money }}</h3>
+        <h3>연봉: {{ this.$store.state.loginUser.salary }}</h3>
+        <h3>가용 금액: {{ this.$store.state.loginUser.money }}</h3>
         <h3>주거래 은행: {{ this.$store.state.loginUser.bank }}</h3>
         <div v-if="this.$store.state.loginUser.financial_products.length !== 0">
-          <p >가입상품 : {{ this.$store.state.loginUser.financial_products }} </p>
+          <p>가입상품 : {{ this.$store.state.loginUser.financial_products }}</p>
         </div>
-        <div v-if="this.$store.state.loginUser.like_financial_products.length !== 0">
-          <p> 좋아하는 상품 : {{ this.$store.state.loginUser.like_financial_products }} </p>
+        <div
+          v-if="
+            this.$store.state.loginUser.like_financial_products.length !== 0
+          "
+        >
+          <p>
+            좋아하는 상품 :
+            {{ this.$store.state.loginUser.like_financial_products }}
+          </p>
         </div>
-      <hr>  
+        <hr />
       </div>
-        <button @click="updateProfile">프로필 수정하기 </button>  
+      <button @click="updateProfile">프로필 수정하기</button>
     </div>
   </div>
-
 </template>
 
 <script>
-import axios from "axios";
-import Swal from 'sweetalert2'
-const API_URL = "http://127.0.0.1:8000";
+// import axios from "axios";
+import Swal from "sweetalert2";
+// const API_URL = "http://127.0.0.1:8000";
 
 export default {
   name: "ProfileView",
   data() {
     return {
-      loginUser : {},
+      loginUser: {},
       updatedProfile: {
         nickname: "",
         gender: "",
         age: "",
         money: "",
         bank: "",
-        check: ""
+        check: "",
       },
     };
   },
   created() {
-    this.check = false
-    this.getProfile()
-
+    this.check = false;
+    this.getProfile();
   },
   methods: {
     checkProfile() {
@@ -53,7 +59,7 @@ export default {
     },
     // 프로필 가져오기
     getProfile() {
-      console.log(this.$store.state.loginUser)
+      console.log(this.$store.state.loginUser);
       if (Object.keys(this.$store.state.loginUser).length === 0) {
         Swal.fire({
           title: "로그인이 필요한 페이지입니다",
@@ -74,63 +80,27 @@ export default {
           gender: this.$store.state.loginUser.gender,
           age: this.$store.state.loginUser.age,
           money: this.$store.state.loginUser.money,
+          salary: this.$store.state.loginUser.salary,
           bank: this.$store.state.loginUser.bank,
         },
-      })},
-
-    // getProfile() {
-    //   console.log('asdasdsada',this.$store.state.loginUser)
-    //   if (Object.keys(this.$store.state.loginUser).length === 0) {
-    //     alert("로그인이 필요한 페이지입니다...");
-    //     this.$router.push({ name: "login" });
-    //   }
-    // },
-
-    // 프로필 업뎃하기
-    updateUserProfile() {
-      // Send updated profile data to the API for update
-      console.log('업데이트하자')
-      axios({
-        method: "patch",
-        url: `${API_URL}/accounts/signup`,
-        headers: {
-          Authorization: `Token ${this.$store.state.token}`,
-        },
-        data: this.updatedProfile,
-      })
-        .then((res) => {
-          console.log(res);
-          // Update the local profile data with the updated values
-          this.profile = res.data;
-          // Reset the updatedProfile object
-          this.updatedProfile = {
-            nickname: "",
-            gender: "",
-            age: "",
-            available_amount: "",
-            bank: "",
-          };
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      });
     },
   },
 };
 </script>
 
 <style scoped>
-#at_box{
+#at_box {
   border: 2px solid rgb(250, 213, 132);
   margin: 30px;
   padding: 20px;
   border-radius: 20px;
   text-align: left;
 }
-h1{
+h1 {
   margin: 0;
 }
-h3{
+h3 {
   margin: 10px;
 }
 </style>
