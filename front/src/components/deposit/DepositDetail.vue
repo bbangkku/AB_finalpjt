@@ -3,18 +3,7 @@
   <div>
     <div class="details">
     <h1>{{ product.fin_prdt_nm }} 상세 페이지</h1>
-    <!-- <v-sheet
-      :class="model"
-      max-width="256"
-      class="mx-auto mt-8"
-      elevation="12"
-      height="128"
-      width="100%"
-      color="black"
-    ></v-sheet>
-    <code class="text-subtitle-1">.{{ model }}</code> -->
-
-    <v-card width="900">
+      <div id='at_box'>
       <div class="markbox">
         <div v-if="product.kor_co_nm === '우리은행'">
           <img src="https://i.namu.wiki/i/ze8Asys7bFONN62QXdFwq5WBSGnSWppqxcMqooBDcbt36mu9C8jXKB0_3cB67Qad5H6c3lBB-b6lE2vqROpq_TYfeY-cke98TuzU1cjUBCu6QjKA2_-sRiUr0DfbLcMvqME6ILVLzY_qgWD0yX5ez-G-ZsDLWbq4MumkSOh37Nk.svg" alt=""
@@ -121,7 +110,8 @@
           cover>
         </div>
       </div>
-
+      <hr>
+      <br>
       <div class="btngrid">
         <div style="content-align:right; width:200px; margin-right: 20px">
         <router-link to="/deposit" id="link_txt">
@@ -142,22 +132,38 @@
         <h3>가입대상 : {{ product.join_member }}</h3>
         <h3>가입방법 : {{ product.join_way }}</h3>
         <h3>우대조건 : {{ product.spcl_cnd }}</h3>
-        <h3>가입조건 : {{ product.join_deny }}</h3>
-        <h4>( 1-제한없음 / 2-서민전용 / 3-일부제한 )</h4>
+        <div v-if="product.join_deny === 1">
+          <h3>가입조건 : 제한없음 </h3>
+        </div>
+        <div v-if="product.join_deny === 2">
+          <h3>가입조건 : 서민전용 </h3>
+        </div>
+        <div v-if="product.join_deny === 3">
+          <h3>가입조건 : 일부제한 </h3>
+        </div>
+        <div style="background-color: yellow;"></div>
         <h3>※ 기타 유의사항 ※</h3>
         <h3>{{ product.etc_note }}</h3>
       </v-card-subtitle>
 
-          
       <v-btn
           color="orange-lighten-2"
           variant="text"
           @click="addProduct"
         >
-          {{ btn }}
+          가입하기
         </v-btn>
+
+        <v-btn
+          color="orange-lighten-2"
+          variant="text"
+          @click="minusProduct"
+        >
+          해지하기
+        </v-btn>
+
         <v-spacer></v-spacer>
-    </v-card>
+  </div>
   </div>
 
 
@@ -175,23 +181,27 @@ export default {
       product: {},
       reveal: false,
       show: false,
-      btnn : true
+
     };
   },
   created() {
-    
     this.productId = this.$route.params.productId;
     this.fetchProductName(this.productId);
   },
-  computed: {
-    btn() {
-      return this.btnn ? '가입하기' : '해지하기'
+  computed:{
+    isProductIn(){
+      const product = this.$store.state.loginUser.financial_products.find(
+        (item) => item.fin_prdt_nm === this.product.fin_prdt_nm
+      )
+      console.log('product',product)
+      console.log('item',this.fin_prdt_nm)
+      console.log('this',this.product.fin_prdt_nm)
+      // 일치하면 true 아니면 false
+      return !!product
     }
-    },
+  }
+  ,
   methods: {
-    isProductIn(bl) {
-      this.btnn= bl
-      },
     fetchProductName(productId) {
       console.log(productId)
       axios
@@ -207,43 +217,44 @@ export default {
     },
     addProduct(){
       const updatedProducts = this.$store.state.loginUser.financial_products
-      this.isProductIn(updatedProducts.includes(this.product.fin_prdt_nm))
-      // console.log(updatedProducts)
-      // console.log(this.product.fin_prdt_nm)
-      if (updatedProducts.includes(this.product.fin_prdt_nm)){
-        const index = updatedProducts.indexOf(this.product.fin_prdt_nm);
-        if (index > -1) {
-          updatedProducts.splice(index, 1);
-          }
-        this.$store.commit('DELETEPRODUCT',updatedProducts)
-        } else {
-        updatedProducts.push(this.product.fin_prdt_nm)
-        this.$store.commit('ADDPRODUCT',updatedProducts)
-        return
-      }
+      updatedProducts.push(this.product.fin_prdt_nm)
+      this.$store.commit('ADDPRODUCT',updatedProducts)
       axios({
-        method: "post",
-        url: `${API_URL}/dj-rest-auth/user/`,
+        method: "put",
+        url: `${API_URL}/dj-rest-auth/user/change/`,
         headers: {
           Authorization: `Token ${this.$store.state.token}`,
         },
+        data: updatedProducts,
       })
         .then((res) => {
-          console.log(res)
-          this.comments = res.data;
-          console.log(this.comments,'comments')
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);
-          this.comments = [];
         });
     },
+    minusProduct(){
+      const updatedProducts = this.$store.state.loginUser.financial_products
+      updatedProducts.delete(this.product.fin_prdt_nm)
+      this.$store.commit('DELETEPRODUCT',updatedProducts)
+    }, 
+    },
 }
-    }
 
 </script>
 
 <style scoped>
+#at_box{
+  /* text-align: left; */
+  width: 90%;
+  border: 2px solid rgb(250, 213, 132);
+  margin: 20px;
+  padding: 35px;
+  border-radius: 20px;
+  font-family: 'NanumSquareRound';
+  font-weight: lighter;
+}
 .v-card--reveal {
   bottom: 0;
   opacity: 1 !important;
@@ -271,6 +282,14 @@ h3{
 .details {
   display: grid;
   justify-items: center;
+}
+
+h1{
+  font-family: 'NanumSquareRound';
+}
+div{
+  font-family: 'NanumSquareRound';
+  font-weight: lighter;
 }
 
 </style>

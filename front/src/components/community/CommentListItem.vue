@@ -1,30 +1,47 @@
 <template>
   <div>
     <div v-if="check(comment)">
-      <!-- {{ comment.article }} -->
-      <p>{{comment.id}}번댓글</p>
-      <p>{{ comment.content.content }}</p>
-      <p>유저 : {{ comment?.username }}</p>
-      <br>
-      <form @submit.prevent="editComment(comment)" v-if="isEditing && isUserAuthorized(comment)">
-        <button type="submit">수정</button>
-      </form>
-      <form @submit.prevent="deleteComment(comment)" v-if="isEditing && isUserAuthorized(comment)">
-        <button type="submit">삭제</button>
-      </form>
-<br>
-      <hr />
-      <input
-        type="text"
-        v-model="form.updateContent"
-        v-if="!isEditing && $store.state.loginUser.username === comment.username"
-      />
+      <div class='comment_box'>
+        <p>No.{{comment.id}}</p>
+        <h4>{{ comment?.username }} : {{ comment.content }}</h4>
+        <div class="c_box">
+          <div class="a_right">
+            <div id="c_button">
+              <form @submit.prevent="editComment(comment)" v-if="isEditing && isUserAuthorized(comment)">
+                <v-btn id="btn" type="submit" rounded="sm" block size="x-large" color="#3F51B5">
+                  수정
+                </v-btn>
+              </form>
+            </div>
 
-      <form @submit.prevent="updateComment(comment)" v-if="!isEditing && isUserAuthorized(comment)">
-        <button type="submit" >확인</button>
-      </form>
+            <div id="c_button">
+              <form @submit.prevent="deleteComment(comment)" v-if="isEditing && isUserAuthorized(comment)">
+                <v-btn id="btn" type="submit" rounded="sm" block size="x-large" color="#EF5350">
+                  삭제
+                </v-btn>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
+      <hr />
+      <!-- 수정창 -->
+      <div class="up_box">
+        <form @submit.prevent="submitComment">
+          <input id='r_comment' v-model="form.updateContent" type="text"
+          v-if="!isEditing && $store.state.loginUser.username === comment.username"
+            placeholder="댓글을 입력해주세요">
+        </form>
+
+        <form @submit.prevent="updateComment(comment)" v-if="!isEditing && isUserAuthorized(comment)">
+          <v-btn id="btn1" type="submit" rounded="sm" block size="x-large" color="#EF5350">
+                확인
+          </v-btn>
+        </form>        
+      </div>
+
     </div>
+  </div>
 </template>
 
 <script>
@@ -124,4 +141,49 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.up_box{
+  display: flex;
+}
+
+#r_comment{
+  width: 60%;
+  height: 40px;
+  text-align: left;
+  border: 2px solid rgb(250, 213, 132);
+  margin: 15px;
+  padding: 15px;
+  border-radius: 20px;
+}
+
+div{
+  font-family: 'NanumSquareRound';
+  font-weight: lighter;
+}
+
+.comment_box{
+  padding: 10px;
+}
+
+.a_right {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+#c_button{
+  width: 100px;
+  margin: 5px;
+  /* margin: 0px 30px 0px 30px; */
+  font-weight: 700;
+  align-content: right;
+}
+
+#btn{
+  color: white;
+}
+#btn1{
+  color: white;
+  margin: 15px
+}
+
+</style>

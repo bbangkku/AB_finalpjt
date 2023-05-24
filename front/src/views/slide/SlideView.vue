@@ -33,11 +33,11 @@ export default {
         interval: 2000,
       },
       images: [
-        require('@/assets/bank/kakao.png'),
-        require('@/assets/bank/toss.png'),
-        require('@/assets/bank/hana.png'),
-        require('@/assets/bank/kb.png'),
-        require('@/assets/bank/sh.png'),
+        require('@/assets/bank/kakao1.png'),
+        require('@/assets/bank/toss1.png'),
+        require('@/assets/bank/hana1.png'),
+        require('@/assets/bank/kb1.png'),
+        require('@/assets/bank/uri1.png'),
       ],
     };
   },

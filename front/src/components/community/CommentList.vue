@@ -9,37 +9,10 @@
         @comment-updated="updateCommentContent"
       />
     </ul>
-    <!-- <div v-for="comment in comments" :key="comment.id">
-      <div v-if="check(comment)">
-      {{ comment }}
-      <p>{{ comment?.content }}</p>
-      <p>유저 : {{ comment?.username }}</p>
-
-      <form @submit.prevent="editComment(comment)" v-if="isEditing && isUserAuthorized(comment)">
-        <button type="submit">수정</button>
-      </form>
-      <form @submit.prevent="deleteComment(comment)" v-if="isEditing && isUserAuthorized(comment)">
-        <button type="submit">삭제</button>
-      </form>
-
-      <hr />
-      <input
-        type="text"
-        v-model="comment.updateContent"
-        v-if="!isEditing && $store.state.loginUser.username === comment.username"
-      />
-
-      <form @submit.prevent="updateComment(comment)" v-if="!isEditing && isUserAuthorized(comment)">
-        <button type="submit">확인</button>
-      </form>
-
-    </div> -->
-    
     <form @submit.prevent="submitComment">
       <input id='r_comment' v-model="commentContent" type="text"
         placeholder="댓글을 입력해주세요">
       <button type="submit">댓글 작성</button>
-      댓글수정
     </form>
   </div>
 </template>

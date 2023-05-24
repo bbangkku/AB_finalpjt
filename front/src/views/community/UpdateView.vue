@@ -1,21 +1,33 @@
-UpdateView.vue
-
 <template>
   <div>
-    <h1>Edit Article</h1>
+    <div id="at_box">
+    <h3>게시물을 수정해주세요</h3>
+    <div class="a_right">
+      <div id="c_button">
+        <router-link :to="{ name: 'article_detail', params: { id: articleId } }" style="text-decoration: none;">
+        <v-btn id="btn" type="submit" rounded="sm" block size="x-large" color="#2962FF" >
+            뒤로가기
+        </v-btn></router-link>
+      </div>
+    </div>
+
+
     <form @submit.prevent="updateArticle">
+      <input type="text" id="r_content" v-model="form.title"
+        placeholder="제목을 입력해주세요" /><br />
+      <br />
+      <textarea id="r_content" cols="30" rows="10" v-model="form.content"
+      placeholder="내용을 입력해주세요"></textarea>
+
       <div>
-        <label for="title">Title:</label>
-        <input type="text" id="title" v-model="form.title" />
+        <v-btn rounded="sm" color="#FFF176">
+          <button type="submit">UPDATE</button>
+        </v-btn>
       </div>
-      <div>
-        <label for="content">Content:</label>
-        <textarea id="content" v-model="form.content"></textarea>
-      </div>
-      <button type="submit">Update</button>
-      <router-link :to="{ name: 'article_detail', params: { id: articleId } }">Cancel</router-link>
     </form>
+
   </div>
+</div>
 </template>
 
 <script>
@@ -78,3 +90,47 @@ export default {
 };
 </script>
 
+<style scoped>
+#at_box{
+  /* text-align: left; */
+  border: 2px solid rgb(250, 213, 132);
+  margin: 15px;
+  padding: 15px;
+  border-radius: 20px;
+  font-family: 'NanumSquareRound';
+}
+
+
+#r_content{
+  width: 60%;
+  height: 70%;
+  text-align: left;
+  border: 2px solid rgb(250, 213, 132);
+  margin: 5px;
+  padding: 15px;
+  border-radius: 10px;
+}
+div{
+  font-family: 'NanumSquareRound';
+}
+h3{
+  margin: 10px;
+  color: rgb(68, 68, 68);
+}
+
+#c_button{
+  width:90px;
+  color: white;
+}
+
+#btn{
+  color: white;
+}
+
+.a_right {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  padding:10px
+}
+</style>

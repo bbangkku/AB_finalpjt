@@ -32,10 +32,12 @@ export default {
   margin: 15px;
   padding: 20px;
   border-radius: 20px;
+  font-family: 'NanumSquareRound';
 }
 #at_box2{
   display: flex;
   justify-content: space-between;
+  font-family: 'NanumSquareRound';
 }
 
 h3 {

@@ -1,8 +1,11 @@
 <template>
-  <div>
-    <div id="exchange">
-      <h5 style="padding:0px 10px 10px 10px; color: grey;">
+  <div class="ex">
+    <h2>환율 계산기</h2>
+    <h5 style="padding:0px 10px 10px 10px; color: grey;">
             ※ 사용 가능 시간 : 11:00 AM ~ 6:00 PM</h5>
+    <div id="at_box">
+    <div id="exchange">
+      
       <!-- 거래 유형 선택 -->
       <div id="mini">
         <select v-model="transactionType" class="pl">
@@ -33,56 +36,62 @@
           <label>금액 입력</label>
           <span class="span1"></span>
         </div>
+
+        <!-- 구입 영역 -->
+        <div v-if="transactionType === '구입'">
+          <div v-if="selectedExchRate1 && amount">
+            선택한 국가 환율: {{ parseFloat(selectedExchRate1.replace(/,/g, '')).toFixed(2) }}
+            <br>
+            환전 결과: {{ (parseFloat(selectedExchRate1.replace(/,/g, '')) * amount).toFixed(2)}} 원
+            <br>
+          </div>
+        </div>
+      
+        <!-- 판매 영역 -->
+        <div v-if="transactionType === '판매'">
+          <div id="at_box2" v-if="selectedExchRate2 && amount">
+            선택한 국가 환율: {{ parseFloat(selectedExchRate2.replace(/,/g, '')).toFixed(2) }}
+            <br>
+            환전 결과: {{ (parseFloat(selectedExchRate2.replace(/,/g, '')) * amount).toFixed(2) }} 원
+            <br>
+            <br>
+          </div>
+        </div>
       </div>
 
-      <!-- 구입 영역 -->
-      <div v-if="transactionType === '구입'">
-        <div v-if="selectedExchRate1 && amount">
-          선택한 국가 환율: {{ parseFloat(selectedExchRate1.replace(/,/g, '')).toFixed(2) }}
-          <br>
-          환전 결과: {{ (parseFloat(selectedExchRate1.replace(/,/g, '')) * amount).toFixed(2)}} 원
-          <br>
-        </div>
-      </div>
       
-      <!-- 판매 영역 -->
-      <div v-if="transactionType === '판매'">
-        <div v-if="selectedExchRate2 && amount">
-          선택한 국가 환율: {{ parseFloat(selectedExchRate2.replace(/,/g, '')).toFixed(2) }}
-          <br>
-          환전 결과: {{ (parseFloat(selectedExchRate2.replace(/,/g, '')) * amount).toFixed(2) }} 원
-          <br>
-          <br>
-        </div>
-      </div>
     </div>
     <br>
     <br>
     <!-- 표 -->
-    <table>
-      <thead>
-        <tr>
-          <!-- 매입율 컬럼 정렬 -->
-          <th v-on:click="sortBy('ttb')">
-            <span class="header-cell-text">통화</span>
-          </th>
-          <th v-on:click="sortBy('ttb')">
-            <span class="header-cell-text">매입율</span>
-          </th>
-          <!-- 매도율 컬럼 정렬 -->
-          <th v-on:click="sortBy('tts')">
-            <span class="header-cell-text">매도율</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="ed in exchangedata" :key="ed.cur_nm">
-          <td>{{ ed.cur_nm }}</td>
-          <td>{{ parseFloat(ed.ttb.replace(/,/g, '')).toFixed(2) }}</td>
-          <td>{{ parseFloat(ed.tts.replace(/,/g, '')).toFixed(2) }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div>
+      <table id="table1">
+        <thead>
+          <tr>
+            <!-- 매입율 컬럼 정렬 -->
+            <th v-on:click="sortBy('ttb')">
+              <span class="header-cell-text">통화</span>
+            </th>
+            <th v-on:click="sortBy('ttb')">
+              <span class="header-cell-text">매입율</span>
+            </th>
+            <!-- 매도율 컬럼 정렬 -->
+            <th v-on:click="sortBy('tts')">
+              <span class="header-cell-text">매도율</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="ed in exchangedata" :key="ed.cur_nm">
+            <td>{{ ed.cur_nm }}</td>
+            <td>{{ parseFloat(ed.ttb.replace(/,/g, '')).toFixed(2) }}</td>
+            <td>{{ parseFloat(ed.tts.replace(/,/g, '')).toFixed(2) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
   </div>
 </template>
 
@@ -145,7 +154,31 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+#table1{
+  position: relative;
+}
+#at_box{
+  width: 90%;
+  /* text-align: left; */
+  border: 2px solid rgb(250, 213, 132);
+  margin: 20px;
+  padding: 35px;
+  border-radius: 20px;
+  font-family: 'NanumSquareRound';
+}
+
+#at_box2{
+  width: 100%;
+  height: 75px;
+  /* text-align: left; */
+  border: 2px solid rgb(250, 213, 132);
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 20px;
+  font-family: 'NanumSquareRound';
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -159,10 +192,10 @@ th, td {
 }
 
 #exchange {
-  margin: 10px;
+  /* margin: 10px; */
   display: grid;
   grid-template-columns: 1fr;
-  height: 200px;
+  height: auto;
   justify-items: center;
 }
 
@@ -219,13 +252,12 @@ th, td {
     box-sizing: border-box;
     text-align: left;
 }
+.ex {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: 1fr;
+}
 
-
-/* * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-} */
 
 .input_box {
   position: relative;
@@ -282,5 +314,16 @@ font-weight: bold;
 input:focus ~ span, input:valid ~ span {
 width: 100%;
 }
+
+h2 {
+  padding:10px;
+  color: rgb(90, 90, 90);
+  margin: 10px;
+  font-family: 'NanumSquareRound';
+  font-weight:bold;
+}
+/* #table_div {
+  margin-top: 130px;
+} */
 
 </style>

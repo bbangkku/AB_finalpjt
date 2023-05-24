@@ -1,23 +1,21 @@
 <template>
-  <div>
+  <div id="at_box">
     <h3>회원정보 수정</h3>
-    <div class="mid">
-      <form @submit.prevent="updateUserProfile">
+    <form @submit.prevent="updateUserProfile">
+      <div class="mid">
+        <!-- nickname -->
         <div class="mini">
-          <div class="input_box">
-            <input
-              type="text"
-              id="nickname"
-              v-model="nickname"
-              required
-              style="margin: 0"
-            />
-            <label for="nickname">닉네임</label>
-            <span class="span1"></span>
-          </div>
+          <div class="mini"><h4>NICKNAME</h4></div>
+          <input 
+          id='r_comment' 
+          v-model="nickname" type="text"
+          required
+          placeholder="NICKNAME">
         </div>
 
+        <!-- gender -->
         <div id="mini">
+          <h4>GENDER</h4>
           <select v-model="gender" class="pl">
             <option disabled value="">성별</option>
             <option value="M">남</option>
@@ -25,7 +23,9 @@
           </select>
         </div>
 
+        <!-- age -->
         <div id="mini">
+          <h4>AGE</h4>
           <select id="age" v-model="age" class="pl">
             <option disabled value="">나이</option>
             <option value="0-10">0 ~ 10</option>
@@ -38,16 +38,20 @@
             <option value="70-80">70 ~ 80</option>
           </select>
         </div>
-        <div>
+
+        <!-- salary -->
+        <div id="mini">
+          <h4>SALARY</h4>
           <input
             id="r_comment"
             v-model="salary"
             type="number"
-            placeholder="SALARY"
-          />
+            placeholder="SALARY"/>
         </div>
 
+        <!-- 가용금액 -->
         <div id="mini">
+          <h4>가용금액</h4>
           <select id="money" v-model="money" class="pl">
             <option disabled value="">가용 금액</option>
             <option value="0-30M">0 ~ 30,000,000</option>
@@ -58,6 +62,7 @@
         </div>
 
         <div id="mini">
+          <h4>주거래 은행</h4>
           <select id="bank" v-model="bank" class="pl">
             <option disabled value="">주거래 은행</option>
             <option value="KEB하나은행">KEB하나은행</option>
@@ -71,8 +76,8 @@
           </select>
         </div>
         <button type="submit">프로필 수정</button>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -137,17 +142,77 @@ export default {
 </script>
 
 <style scoped>
-#at_box {
-  border: 2px solid rgb(250, 213, 132);
-  margin: 30px;
-  padding: 20px;
-  border-radius: 20px;
-  text-align: left;
+
+.mini{
+  display: flex;
+  align-content: center;
+  margin: 10px;
+  /* flex-direction: row;
+  justify-content: center; */
 }
-h1 {
+
+.mid{
+  display: grid;
+  flex-direction: row;
+  justify-items: center;
+}
+#box1{
+  display: flex;
+  flex-direction:column;
+  width: 90%;
   margin: 0;
 }
-h3 {
-  margin: 10px;
+#at_box{
+  /* text-align: left; */
+  border: 2px solid rgb(250, 213, 132);
+  margin: 15px;
+  padding: 15px;
+  border-radius: 20px;
+  font-family: 'NanumSquareRound';
+  font-weight: lighter;
+}
+
+#r_comment{
+  width: 70%;
+  height: 40px;
+  text-align: left;
+  border: 2px solid rgb(250, 213, 132);
+  /* margin: 15px; */
+  padding: 15px;
+  border-radius: 10px;
+}
+
+#check{
+  display: grid;
+  flex-direction: row;
+  justify-items: center;
+}
+
+#mini{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pl{
+    width: 200px;
+    border: 2px solid rgb(250, 213, 132);
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: left;
+}
+
+.pl:focus{
+    /* border: 1px solid #e0bc51; */
+    box-sizing: border-box;
+    border-radius: 10px;
+    outline: 4px solid #fff4b5;
+    border-radius: 10px;
 }
 </style>

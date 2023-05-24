@@ -1,16 +1,17 @@
 <template>
   <div>
     <div id="at_box">
-      <h1>{{ this.$store.state.loginUser.nickname }}님의 프로필</h1>
-      <br />
+      <h1>{{ this.$store.state.loginUser.nickname }}님의 프로필 😘</h1>
+      
+      <hr />
       <div>
         <h3>성별: {{ this.$store.state.loginUser.gender }}</h3>
         <h3>나이: {{ this.$store.state.loginUser.age }}</h3>
-        <h3>연봉: {{ this.$store.state.loginUser.salary }}</h3>
+        <h3>연봉: {{ this.$store.state.loginUser.salary }} 만원</h3>
         <h3>가용 금액: {{ this.$store.state.loginUser.money }}</h3>
         <h3>주거래 은행: {{ this.$store.state.loginUser.bank }}</h3>
         <div v-if="this.$store.state.loginUser.financial_products.length !== 0">
-          <p>가입상품 : {{ this.$store.state.loginUser.financial_products }}</p>
+          <h3>가입상품 : {{ this.$store.state.loginUser.financial_products }}</h3>
         </div>
         <div
           v-if="
@@ -22,9 +23,14 @@
             {{ this.$store.state.loginUser.like_financial_products }}
           </p>
         </div>
-        <hr />
       </div>
-      <button @click="updateProfile">프로필 수정하기</button>
+      <div class="a_right">
+        <div class="b_box">
+          <v-btn @click="updateProfile" id="btn" type="submit" rounded="sm" block size="x-large" color="#3F51B5">
+            수정하기
+          </v-btn>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -90,6 +96,12 @@ export default {
 </script>
 
 <style scoped>
+.a_right {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
 #at_box {
   border: 2px solid rgb(250, 213, 132);
   margin: 30px;
@@ -98,9 +110,19 @@ export default {
   text-align: left;
 }
 h1 {
-  margin: 0;
+  margin: 10px;
 }
 h3 {
   margin: 10px;
+}
+div{
+  font-family: 'NanumSquareRound';
+}
+#btn{
+  color: white;
+}
+
+#b_box{
+  width: 100px;
 }
 </style>

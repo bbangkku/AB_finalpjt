@@ -1,45 +1,33 @@
 <template>
-  <div>
-    <h5 style="padding:0px 10px 10px 10px; color: grey;">
-            주변 은행을 검색해보세요</h5>
-
-    <div class="big_map">
-      <MapComponent class="kmap" :options="mapOption" ref="mapComponent" />
-      <div class="searchbox">
-        <div class="search_bar">
-        <div class="input_box">
-            <input type="text"
-            :loading="loading"
-              density="compact"
-              variant="solo"
-              label="은행 검색"
-              single-line
-              hide-details
-              append-icon="mdi-map-marker"
-              required style="margin: 0;"
-              @keyup.enter="searchBank">
-            <label for="search_bank">&nbsp; &nbsp;&nbsp;은행검색  🔍</label>
-            <span class="span1"></span>
+  <div class="ex">
+    <h3>주변 은행을 검색해보세요 ! </h3>
+    <div id='at_box'>
+      <div class="big_map">
+        <MapComponent class="kmap" :options="mapOption" ref="mapComponent" />
+        <div class="searchbox">
+          <div class="search_bar">
+            <div class="input_box">
+                <input type="text"
+                :loading="loading"
+                  density="compact"
+                  variant="solo"
+                  label="은행 검색"
+                  single-line
+                  hide-details
+                  append-icon="mdi-map-marker"
+                  required style="margin: 0;"
+                  @keyup.enter="searchBank">
+                <label for="search_bank">&nbsp; &nbsp;&nbsp;은행검색  🔍</label>
+                <span class="span1"></span>
+              </div>
           </div>
-      </div>
 
-        <!-- <v-text-field
-          :loading="loading"
-          density="compact"
-          variant="solo"
-          label="은행 검색"
-          append-icon="mdi-magnify"
-          single-line
-          hide-details
-          @keyup.enter="searchBank"
-        ></v-text-field> -->
-
-
-        <div class="results">
-          <div class="place" v-for="rs in search.result" :key="rs.id" @click="showPlace(rs)">
-            <h4>{{ rs.place_name }}</h4>
-            <div class="addr">
-              {{ rs.road_address_name }}
+          <div class="results">
+            <div class="place" v-for="rs in search.result" :key="rs.id" @click="showPlace(rs)">
+              <h4>{{ rs.place_name }}</h4>
+              <div class="addr">
+                {{ rs.road_address_name }}
+              </div>
             </div>
           </div>
         </div>
@@ -145,6 +133,17 @@ export default {
 </script>
 
 <style scoped>
+#at_box{
+  /* text-align: left; */
+  width: 90%;
+  border: 2px solid rgb(250, 213, 132);
+  margin: 20px;
+  padding: 35px;
+  border-radius: 20px;
+  font-family: 'NanumSquareRound';
+  font-weight: lighter;
+}
+
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
 }
@@ -192,11 +191,18 @@ export default {
 }
 
 .place:hover {
-  background-color: rgb(251, 228, 232);
+  background-color: rgb(251, 242, 224);
 }
 
 h4 {
   margin: 0;
+}
+
+h3 {
+  padding:20px 10px 0px 10px;
+  color: rgb(90, 90, 90);
+  font-family: 'NanumSquareRound';
+  /* font-weight: lighter; */
 }
 
 .kmap {
@@ -206,5 +212,72 @@ h4 {
 
 .big_map {
   display: flex;
+  justify-content: space-between;
 }
+
+
+/* 검색창 */
+.input_box {
+  position: relative;
+  width: 300px;
+  margin-top: 30px;
+}
+
+input {
+  font-size: 15px;
+  color: #222222;
+  width: 200px;
+  border: none;
+  border-bottom: solid #aaaaaa 1px;
+  padding-bottom: 10px;
+  text-align: center;
+  position: relative;
+  background: none;
+  z-index: 5;
+}
+
+input::placeholder { color: #aaaaaa; }
+input:focus { outline: none; }
+
+.span1 {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 50%; 
+  background-color: #666;
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  transition: 0.3s;
+}
+
+label {
+position: absolute;
+color: #878787;
+left: 50%;
+transform: translateX(-50%);
+font-size: 14px;
+bottom: 8px;
+transition: all .2s;
+}
+
+input:focus ~ label, input:valid ~ label {
+font-size: 15px;
+bottom: 40px;
+color: #666;
+font-weight: bold;
+}
+
+input:focus ~ span, input:valid ~ span {
+width: 100%;
+}
+
+.ex {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: 1fr;
+}
+
+
 </style>

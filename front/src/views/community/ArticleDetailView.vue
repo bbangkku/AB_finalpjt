@@ -1,15 +1,19 @@
-ArticleDetailView.vue
 <template>
   <div>
-    <!-- <h1>Detail</h1> -->
     <div id="at_box">
-      <!-- {{this.$store.state.articles}} -->
       <div id="at_box2">
-        <h4>Number : {{ article?.id }}</h4>
-        <router-link :to="{ name: 'article_view' }">
-          <button>뒤로가기</button></router-link>
+        <div>
+          <h4>Number : {{ article?.id }}</h4>
+          <h2>TITLE : {{ article?.title }}</h2>
+        </div>
+        <div id="c_button">
+          <router-link :to="{ name: 'article_view' }" style="text-decoration: none;">
+          <v-btn id="btn1" type="submit" rounded="sm" block size="x-large" color="#FFF176" >
+              뒤로가기
+          </v-btn></router-link>
+        </div>
       </div>
-      <h2>TITLE : {{ article?.title }}</h2>
+      
       <hr>
       <h3>CONTENT </h3>
       <h4>{{ article?.content }}</h4>
@@ -18,8 +22,26 @@ ArticleDetailView.vue
         <h5>UPDATE TIME : {{ article?.updated_at }}</h5>
       </div>
       
-      <button v-if="isUserAuthorized" @click="deleteArticle">삭제</button>
-      <button v-if="isUserAuthorized" @click="updateView">수정</button>
+      <div class="c_box">
+          <div class="a_right">
+            <div id="c_button">
+                <v-btn id="btn" 
+                  v-if="isUserAuthorized" @click="updateView"
+                  type="submit" rounded="sm" block size="x-large" color="#3F51B5">
+                  수정
+                </v-btn>
+            </div>
+
+            <div id="c_button">
+                <v-btn id="btn" 
+                v-if="isUserAuthorized" @click="deleteArticle"
+                type="submit" rounded="sm" block size="x-large" color="#EF5350">
+                  삭제
+                </v-btn>
+            </div>
+          </div>
+        </div>
+      
     </div> 
 
     <div id="at_box">
@@ -172,6 +194,7 @@ export default {
   margin: 15px;
   padding: 15px;
   border-radius: 20px;
+  font-family: 'NanumSquareRound';
 }
 #at_box2{
   display: flex;
@@ -183,5 +206,32 @@ export default {
 
 h3, h2, h4{
   margin: 10px;
+}
+
+#btn{
+  color: rgb(248, 248, 248);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+#btn1{
+  color: rgb(58, 57, 57);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.a_right {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
+#c_button{
+  width: 100px;
+  margin: 5px;
+  margin-top:10px;
+  /* margin: 0px 30px 0px 30px; */
+  font-weight: 700;
+  align-content: right;
 }
 </style>

@@ -1,16 +1,17 @@
 <template>
   <div>
     <h1>COMMUNITY</h1>
-    <!-- {{ $store.state.loginUser.nickname }}님 안녕하세요 -->
-    <div id="c_button">
-      <v-btn rounded="sm" block size="x-large" color="#FFF176">
-        <router-link :to="{ name: 'article_create' }">CREATE</router-link>
-      </v-btn>
+    <div class="a_right">
+      <div id="c_button">
+        <v-btn rounded="sm" block size="x-large" color="#FFF176">
+          <router-link id="r_btn" :to="{ name: 'article_create' }" style="text-decoration: none;">CREATE</router-link>
+        </v-btn>
+      </div>
     </div>
+
     <div>
       <ArticleList />
     </div>
-    
     <hr />
   </div>
 </template>
@@ -55,13 +56,24 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.a_right {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
 #c_button{
   width: 100px;
-  display: inline-block;
+  margin: 0px 30px 0px 30px;
+  font-weight: 700;
   align-content: right;
-  text-align: right;
-  align-self: right;
-  /* float: right; */
+}
+
+#r_btn{
+  color: black
+}
+
+div{
+  font-family: 'NanumSquareRound';
 }
 </style>

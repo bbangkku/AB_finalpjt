@@ -2,6 +2,15 @@
   <div>
     <div id="at_box">
       <h3>게시물을 작성해주세요</h3>
+      <div class="a_right">
+        <div id="c_button">
+          <router-link :to="{ name: 'article_view' }" style="text-decoration: none;">
+          <v-btn id="btn" type="submit" rounded="sm" block size="x-large" color="#2962FF" >
+              뒤로가기
+          </v-btn></router-link>
+        </div>
+      </div>
+      
       <form @submit.prevent="createArticle">
         <input type="text" id="r_content" v-model.trim="title"
           placeholder="제목을 입력해주세요" /><br />
@@ -14,9 +23,6 @@
             <button type="submit">CREATE</button>
           </v-btn>
         </div>
-          
-        
-        
       </form>
       </div>
   </div>
@@ -66,6 +72,13 @@ export default {
 </script>
 
 <style scoped>
+.a_right {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  padding:10px
+}
+
 h3{
   margin: 10px;
   color: rgb(68, 68, 68);
@@ -77,6 +90,7 @@ h3{
   margin: 15px;
   padding: 15px;
   border-radius: 20px;
+  font-family: 'NanumSquareRound';
 }
 
 #r_content{
@@ -87,5 +101,14 @@ h3{
   margin: 5px;
   padding: 15px;
   border-radius: 10px;
+}
+
+#c_button{
+  width:90px;
+  color: white;
+}
+
+#btn{
+  color: white;
 }
 </style>
