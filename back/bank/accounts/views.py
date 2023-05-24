@@ -11,12 +11,14 @@ from rest_framework import status
 @permission_classes([IsAuthenticated]) # 인증된 사용자만 권한 허용
 def userchange(request, username):
     Users = get_object_or_404(User, username=username)
-    if request.user == User:
+    print(request.data,'readsad')
+    if request.user == Users:
       serializer = UserSerializer(instance=Users,data=request.data)
+      print(serializer,'asdsadsad')
       if serializer.is_valid(raise_exception=True):
           serializer.save()
           serializer = UserSerializer(Users)
-          return Response(serializer.data)
+          return Response(serializer)
         
 # 회원탈퇴
 @api_view(['POST'])

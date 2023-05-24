@@ -6,5 +6,5 @@ app_name = 'accounts'
 
 
 urlpatterns = [
-    path("user/change/", views.userchange, name='user-change'),
+    path("user/change/<str:username>/", views.userchange, name='user-change'),
 ]

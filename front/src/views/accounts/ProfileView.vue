@@ -3,7 +3,6 @@
     <div id="at_box">
       <h1>{{ this.$store.state.loginUser.nickname }}님의 프로필</h1>
       <br>
-      <hr>
       <div>
         <h3>성별: {{ this.$store.state.loginUser.gender }}</h3>
         <h3>나이: {{ this.$store.state.loginUser.age }}</h3>
@@ -12,6 +11,10 @@
         <div v-if="this.$store.state.loginUser.financial_products.length !== 0">
           <p>가입상품 : {{ this.$store.state.loginUser.financial_products }} </p>
         </div>
+        <div v-if="this.$store.state.loginUser.like_financial_products.length !== 0">
+          <p> 좋아하는 상품 : {{ this.$store.state.loginUser.like_financial_products }} </p>
+        </div>
+
       </div>
       
     </div>
