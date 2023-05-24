@@ -6,5 +6,8 @@ app_name = 'accounts'
 
 
 urlpatterns = [
-    path("user/change/<str:username>/", views.userchange, name='user-change'),
+    path('delete/', views.user_delete,), # 회원탈퇴
+    path("user/change/", views.userchange, name='user-change'), # 유저 변경
+    path("user/product/<str:user_pk>", views.userproductget, name='user-change'), # 유저가입 상품 조회
+    path('user/<int:user_pk>/recommend/', views.userrecommend), # 사용자 상품 추천(k-means)
 ]

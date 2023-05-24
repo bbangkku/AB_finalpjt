@@ -5,6 +5,7 @@ import HomeView from '../views/HomeView.vue'
 import SignupView from "@/views/accounts/SignupView";
 import LoginView from "@/views/accounts/LoginView";
 import ProfileView from "@/views/accounts/ProfileView";
+import ProfileUpdateView from "@/views/accounts/ProfileUpdateView";
 // community
 import ArticleView from "@/views/community/ArticleView";
 import CreateView from "@/views/community/CreateView";
@@ -45,6 +46,11 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: ProfileView,
+  },
+  {
+    path: "/profile/update",
+    name: "profile_update",
+    component: ProfileUpdateView,
   },
   // community
   {

@@ -115,4 +115,5 @@ def comment_create(request, article_pk):
         print('댓글이다~~~~~~',comments)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
-        
+
+

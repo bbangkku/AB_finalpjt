@@ -152,15 +152,7 @@
           variant="text"
           @click="addProduct"
         >
-          가입하기
-        </v-btn>
-
-        <v-btn
-          color="orange-lighten-2"
-          variant="text"
-          @click="minusProduct"
-        >
-          해지하기
+          {{ btn }}
         </v-btn>
 
         <v-spacer></v-spacer>
@@ -180,6 +172,7 @@ export default {
       product: {},
       reveal: false,
       show: false,
+      btnn : true
     };
   },
   created() {
@@ -187,7 +180,15 @@ export default {
     this.fetchProductName(this.productId);
     // this.$router.go(0)
   },
+    computed: {
+    btn() {
+      return this.btnn ? '가입하기' : '해지하기'
+    }
+    },
   methods: {
+    isProductIn(bl) {
+      this.btnn= bl
+      },
     fetchProductName(productId) {
       console.log(productId)
       axios
@@ -204,28 +205,37 @@ export default {
     },
     addProduct(){
       const updatedProducts = this.$store.state.loginUser.financial_products
-      updatedProducts.push(this.product.fin_prdt_nm)
-      this.$store.commit('ADDPRODUCT',updatedProducts)
+      this.isProductIn(updatedProducts.includes(this.product.fin_prdt_nm))
+      // console.log(updatedProducts)
+      // console.log(this.product.fin_prdt_nm)
+      if (updatedProducts.includes(this.product.fin_prdt_nm)){
+        const index = updatedProducts.indexOf(this.product.fin_prdt_nm);
+        if (index > -1) {
+          updatedProducts.splice(index, 1);
+          }
+        this.$store.commit('DELETEPRODUCT',updatedProducts)
+        } else {
+        updatedProducts.push(this.product.fin_prdt_nm)
+        this.$store.commit('ADDPRODUCT',updatedProducts)
+        return
+      }
       axios({
-        method: "put",
-        url: `${API_URL}/dj-rest-auth/user/change/`,
+        method: "post",
+        url: `${API_URL}/dj-rest-auth/user/`,
         headers: {
           Authorization: `Token ${this.$store.state.token}`,
         },
-        data: updatedProducts,
       })
         .then((res) => {
-          console.log(res);
+          console.log(res)
+          this.comments = res.data;
+          console.log(this.comments,'comments')
         })
         .catch((err) => {
           console.log(err);
+          this.comments = [];
         });
     },
-    minusProduct(){
-      const updatedProducts = this.$store.state.loginUser.financial_products
-      updatedProducts.delete(this.product.fin_prdt_nm)
-      this.$store.commit('DELETEPRODUCT',updatedProducts)
-    }, 
   },
 };
 </script>

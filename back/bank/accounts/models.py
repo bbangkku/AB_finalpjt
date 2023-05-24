@@ -36,8 +36,8 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     GENDER_CHOICES = (
-        ('M', '남성'),
-        ('F', '여성'),
+        ('남', '남성'),
+        ('여', '여성'),
     )
     AGE_CHOICES = (
         ('0-10', '0 ~ 10'),
@@ -48,12 +48,15 @@ class User(AbstractBaseUser):
         ('50-60', '50 ~ 60'),
         ('60-70', '60 ~ 70'),
         ('70-80', '70 ~ 80'),
+        ('80-100', '80 ~ 100')
     )
     AMOUNT_CHOICES = (
         ('0-30M', '0 ~ 30,000,000'),
         ('30M-100M', '30,000,000 ~ 100,000,000'),
         ('100M-300M', '100,000,000 ~ 300,000,000'),
         ('300M-1000M', '300,000,000 ~ 1,000,000,000'),
+        ('1000M 이상', '1,000,000,000 ~ 1,000,000,000,000,000,000,000,000,000'),
+        
     )
     BANK_CHOICES = (
         ('KEB하나은행','KEB하나은행'),
@@ -83,9 +86,9 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=30,unique=True)
     nickname = models.CharField(max_length=10)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    age = models.CharField(max_length=5, choices=AGE_CHOICES)
+    age = models.CharField(max_length=5)
     money = models.CharField(max_length=30)
-    salary = models.CharField(max_length=10, choices=AMOUNT_CHOICES)
+    salary = models.CharField(max_length=10)
     bank = models.CharField(max_length=10,choices=BANK_CHOICES)
     financial_products = models.ManyToManyField(Subscribe_Products,blank=True, null=True)
     like_financial_products = models.ManyToManyField(Like_Products,blank=True, null=True)

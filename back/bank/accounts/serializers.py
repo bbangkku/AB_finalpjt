@@ -13,6 +13,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'nickname','username', 'gender', 'age', 'money','salary', 'bank','financial_products','like_financial_products']
+        # fields = ['money','age',]
+        
         extra_kwargs = {'password': {'write_only': True}}
 
 #     def create(self, validated_data):
@@ -73,12 +75,12 @@ class RegisterSerializer(serializers.Serializer):
     # email = serializers.EmailField(max_length=50)
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
-    nickname = serializers.CharField(max_length=50)
-    gender = serializers.CharField(max_length=5)
-    age = serializers.CharField(max_length=10)
+    nickname = serializers.CharField(max_length=50,required=False)
+    gender = serializers.CharField(max_length=5,required=False)
+    age = serializers.CharField(max_length=10,required=False)
     money = serializers.CharField(max_length=15)
-    salary = serializers.CharField(max_length=15)
-    bank = serializers.CharField(max_length=15)
+    salary = serializers.CharField(max_length=15,required=False)
+    bank = serializers.CharField(max_length=15,required=False)
     financial_products = serializers.ListField(child=serializers.IntegerField(), required=False)
     like_financial_products = serializers.ListField(child=serializers.IntegerField(), required=False)
 
@@ -141,8 +143,22 @@ class RegisterSerializer(serializers.Serializer):
     
 
 
-class ChangeSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'nickname','username', 'gender', 'age', 'money','salary', 'bank','financial_products','like_financial_products']
+        fields = ['username', 'gender', 'age', 'money','salary', 'bank']
         extra_kwargs = {'password': {'write_only': True}}
+
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'gender', 'age', 'money','salary', 'bank']
+        extra_kwargs = {'password': {'write_only': True}}
+
+
+class RecommendSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('financial_products')

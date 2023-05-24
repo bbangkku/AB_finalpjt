@@ -58,12 +58,12 @@ export default {
   computed: {
     isUserAuthorized() {
       return (
-        this.article && this.article.username === this.$store.state.username
+        this.article && this.article.username === this.$store.state.loginUser.username
       );
     },
   },
   methods: {
-    getArticleDetail() {
+    getArticleDetail() {        
       axios({
         method: "get",
         url: `${API_URL}/api/v1/articles/${this.$route.params.id}/`,

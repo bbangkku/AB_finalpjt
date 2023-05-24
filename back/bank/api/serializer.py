@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import DepositProducts, DepositOptions, InstallmentOptions, InstallmentProducts
+# from ..accounts.models import User
 
 # Form -> forms.Form / forms.ModelForm
 # serializers -> Serializer / ModelSerializer
@@ -28,3 +29,11 @@ class InstallmentOptionsSerializer(serializers.ModelSerializer):
         model = InstallmentOptions
         fields = '__all__'
         read_only_fields = ('fin_prdt_cd',)
+        
+        
+
+# class ProductSerializer(serializers.ModelSerializer):
+#     class UserSerializer(serializers.ModelSerializer):
+#         class Meta:
+#             model = User
+#             fields = ('financial_product',)

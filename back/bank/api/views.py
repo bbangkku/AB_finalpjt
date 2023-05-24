@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.conf import settings
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import *
+# from ..accounts.serializers import UserSerializer
 import requests
-
+from django.shortcuts import get_object_or_404
 from accounts.models import User
+
+
 
 BASE_URL = 'http://finlife.fss.or.kr/'
 API_KEY = settings.API_KEY
@@ -191,14 +193,37 @@ def i_detail(request, product_id):
     return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 
-def subscribe(request, user_id):
-    user = User.objects.get(pk=user_id)
-    
-    if user.financial_products.filter(pk=request.user_id).exists():
-        user.financial_products.remove(request.user)
-    else:
-        user.financial_products.add(request.user)
 
+# 유저가 가입한 상품 조회 및 수정
+
+@api_view(['PUT','POST','DELETE','GET'])
+def userproductchange(request,user_pk,product_pk):
+    user = get_object_or_404(User, pk=user_pk)
+    # product = 
+    # serializer = UserSerializer(user)
+    # return Response(serializer.data)
+
+
+@api_view(['GET','POST','PUT','DELETE'])
+def subscribe(request, product_id, username):
+    if request.method == "GET":
+        product = InstallmentProducts.objects.get()
+        print(product)
+        # serializers = InstallmentProductsSerializer(product)
+        # print(serializers)
+        # if serializers.is_valid(raise_exception=True):
+            
+    # user = User.objects.get(pk=user_id)
+    
+    # if user.financial_products.filter(pk=request.user_id).exists():
+    #     user.financial_products.remove(request.user)
+    # else:
+    #     user.financial_products.add(request.user)
+        
+        
+        
+        
+@api_view(['GET','POST','PUT','DELETE'])
 def like(request, user_id):
     user = User.objects.get(pk=user_id)
     
@@ -206,3 +231,5 @@ def like(request, user_id):
         user.like_financial_products.remove(request.user)
     else:
         user.like_financial_products.add(request.user)
+
+
