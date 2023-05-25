@@ -1,41 +1,62 @@
 <template>
   <div id="at_box">
     <h2>회원가입</h2>
-    <br>
-    <h5 style="padding:0px 10px 10px 10px; color: grey;">
-            ★ 표시된 항목은 필수로 입력해야합니다.</h5>
-    
+    <br />
+    <h5 style="padding: 0px 10px 10px 10px; color: grey">
+      ★ 표시된 항목은 필수로 입력해야합니다.
+    </h5>
+
     <form @submit.prevent="signup">
       <div class="mid">
         <div id="box1">
           <div>
-            <input id='r_comment' v-model="username" type="text"
-            required
-            placeholder="ID">
+            <input
+              id="r_comment"
+              v-model="username"
+              type="text"
+              required
+              placeholder="ID"
+            />
           </div>
 
           <div>
-            <input id='r_comment' v-model="nickname" type="text"
-            required
-            placeholder="NICKNAME">
+            <input
+              id="r_comment"
+              v-model="nickname"
+              type="text"
+              required
+              placeholder="NICKNAME"
+            />
           </div>
 
           <div>
-            <input id='r_comment' v-model="password1" type="password"
-            required
-            placeholder="PASSWORD">
+            <input
+              id="r_comment"
+              v-model="password1"
+              type="password"
+              required
+              placeholder="PASSWORD"
+            />
           </div>
 
           <div>
-            <input id='r_comment' v-model="password2" type="password"
-            required
-            placeholder="PASSWORD CHECK">
+            <input
+              id="r_comment"
+              v-model="password2"
+              type="password"
+              required
+              placeholder="PASSWORD CHECK"
+            />
           </div>
 
           <div>
-            <input id='r_comment' v-model="salary" type="number"
-            required
-            placeholder="SALARY">
+            <input
+              id="r_comment"
+              v-model="salary"
+              type="number"
+              required
+              placeholder="SALARY"
+            />
           </div>
         </div>
 
@@ -49,12 +70,15 @@
               </select>
             </div>
 
-
-          <div>
-            <input id='r_comment' v-model="age" type="number"
-            required
-            placeholder="나이">
-          </div>
+            <div>
+              <input
+                id="r_comment"
+                v-model="age"
+                type="number"
+                required
+                placeholder="나이"
+              />
+            </div>
             <!-- <div id="mini">
               <select id="age" v-model="age" required class="pl">
                 <option disabled value="">나이</option>
@@ -69,11 +93,15 @@
                 <option value="80 up">80세 이상</option>
               </select>
             </div> -->
-          <div>
-            <input id='r_comment' v-model="money" type="number"
-            required
-            placeholder="가용 금액">
-          </div>
+            <div>
+              <input
+                id="r_comment"
+                v-model="money"
+                type="number"
+                required
+                placeholder="가용 금액"
+              />
+            </div>
             <!-- <div id="mini">
               <select id="money" v-model="money" required class="pl">
                 <option disabled value="">가용 금액</option>
@@ -110,7 +138,6 @@
             </div>
           </div>
         </div>
-
       </div>
       <v-btn rounded="sm" color="#FFF176">
         <button type="submit">가입하기</button>
@@ -119,28 +146,27 @@
   </div>
 </template>
 
-
 <script>
 export default {
   data() {
     return {
-      username: '',
-      nickname: '',
-      password1: '',
-      password2: '',
-      money: '',
-      gender: '',
-      age: '',
-      salary: '',
-      bank:'',
-      like_product:{},
-      product:{},
+      username: "",
+      nickname: "",
+      password1: "",
+      password2: "",
+      money: "",
+      gender: "",
+      age: "",
+      salary: "",
+      bank: "",
+      like_product: {},
+      product: {},
     };
   },
   methods: {
     signup() {
       if (this.password1 !== this.password2) {
-        alert('비밀번호가 일치하지 않습니다.');
+        alert("비밀번호가 일치하지 않습니다.");
         return;
       }
       const payload = {
@@ -156,40 +182,47 @@ export default {
         like_product: this.like_product,
         product: this.product,
       };
-        this.$store.dispatch('signUp', payload)
+      this.$store
+        .dispatch("signUp", payload)
         .then(() => {
-          alert('회원가입이 완료되었습니다.');
-          this.$router.push('/accounts/login');
+          alert("회원가입이 완료되었습니다.");
+          const loginpayload = {
+            username: this.username,
+            password: this.password1,
+          };
+          console.log(payload);
+          this.$store.dispatch("login", loginpayload);
+          // this.$router.push('/accounts/login');
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
-.mid{
+.mid {
   display: flex;
 }
-#box1{
+#box1 {
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   width: 90%;
   margin: 0;
 }
-#at_box{
+#at_box {
   /* text-align: left; */
   border: 2px solid rgb(250, 213, 132);
   margin: 15px;
   padding: 15px;
   border-radius: 20px;
-  font-family: 'NanumSquareRound';
+  font-family: "NanumSquareRound";
   font-weight: lighter;
 }
 
-#r_comment{
+#r_comment {
   width: 100%;
   height: 40px;
   text-align: left;
@@ -199,7 +232,7 @@ export default {
   border-radius: 10px;
 }
 
-#check{
+#check {
   display: grid;
   flex-direction: row;
   justify-items: center;
@@ -211,25 +244,25 @@ export default {
   justify-content: center;
 } */
 
-.pl{
-    width: 200px;
-    border: 2px solid rgb(250, 213, 132);
-    box-sizing: border-box;
-    border-radius: 10px;
-    padding: 5px 10px;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    text-align: left;
+.pl {
+  width: 200px;
+  border: 2px solid rgb(250, 213, 132);
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 5px 10px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: left;
 }
 
-.pl:focus{
-    /* border: 1px solid #e0bc51; */
-    box-sizing: border-box;
-    border-radius: 10px;
-    outline: 4px solid #fff4b5;
-    border-radius: 10px;
+.pl:focus {
+  /* border: 1px solid #e0bc51; */
+  box-sizing: border-box;
+  border-radius: 10px;
+  outline: 4px solid #fff4b5;
+  border-radius: 10px;
 }
 </style>

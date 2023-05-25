@@ -3,7 +3,7 @@
     <div v-if="check(comment)">
       <div class='comment_box'>
         <p>No.{{comment.id}}</p>
-        <h4>{{ comment?.username }} : {{ comment?.content }}</h4>
+        <h4>{{ comment?.nickname }} : {{ comment?.content }}</h4>
         <div class="c_box">
           <div class="a_right">
             <div id="c_button">

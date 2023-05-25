@@ -23,6 +23,7 @@ export default new Vuex.Store({
     installmentLoaded: false, // installment 데이터 로드 상태를 저장하는 변수
     // 환율
     exchange: [],
+    financial_products: [],
   },
   getters: {
     isLogin(state) {
@@ -45,7 +46,11 @@ export default new Vuex.Store({
     },
     // 로그아웃
     LOGOUT(state) {
-      state.token = '';    
+      localStorage.setItem(
+        "financial_products",
+        JSON.stringify(state.loginUser.financial_products)
+      ); // 상품저장해놓고
+      state.token = "";
       state.loginUser = {};
     },
 
@@ -77,16 +82,16 @@ export default new Vuex.Store({
     GET_EXCHANGE(state, data) {
       state.exchange = data;
     },
-    ADDPRODUCT(state,products){
+    ADDPRODUCT(state, products) {
       state.loginUser.financial_products = products;
     },
-    LIKEPRODUCT(state,products){
+    LIKEPRODUCT(state, products) {
       state.loginUser.like_financial_products = products;
     },
-    DELETEPRODUCT(state,products){
+    DELETEPRODUCT(state, products) {
       state.loginUser.financial_products = products;
     },
-    UNLIKEPRODUCT(state,products){
+    UNLIKEPRODUCT(state, products) {
       state.loginUser.like_financial_products = products;
     },
   },
@@ -102,9 +107,9 @@ export default new Vuex.Store({
       const nickname = payload.nickname;
       const money = payload.money;
       const bank = payload.bank;
-      const like_product = payload.like_product
-      const product = payload.product
-    
+      const like_product = payload.like_product;
+      const product = payload.product;
+
       axios({
         method: "post",
         url: `${API_URL}/dj-rest-auth/registration/`,
@@ -119,7 +124,7 @@ export default new Vuex.Store({
           money,
           bank,
           like_product,
-          product
+          product,
         },
       })
         .then((res) => {
@@ -129,9 +134,15 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-
     // 로그인 & 토큰얻기
     login({ dispatch, commit }, payload) {
+      const savedProducts = localStorage.getItem("financial_products");
+      console.log("ddddddddddddddddd", savedProducts);
+      if (savedProducts) {
+        const products = JSON.parse(savedProducts);
+        commit("ADDPRODUCT", products);
+      }
+
       const username = payload.username;
       const password = payload.password;
       axios({
@@ -172,8 +183,6 @@ export default new Vuex.Store({
 
     // 로그아웃
     logout({ commit }) {
-      // localStorage.removeItem("Token");
-      // localStorage.removeItem("login-user");
       commit("LOGOUT");
       router.push({ name: "login" });
     },
@@ -188,8 +197,7 @@ export default new Vuex.Store({
         headers: {
           Authorization: `Token ${token}`,
         },
-        params: {
-        },
+        params: {},
       })
         .then((res) => context.commit("GET_ARTICLES", res.data))
         .catch((err) => console.log(err));
