@@ -61,7 +61,7 @@ export default {
       } else if (index === 3) {
         return '010200100092'; // 국민
       } else if (index === 4) {
-        return '230-0118-07'; // 신한
+        return 'WR0001F'; // 우리
       }
       return null;
     },

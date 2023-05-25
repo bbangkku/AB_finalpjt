@@ -39,7 +39,7 @@
 
         <!-- 구입 영역 -->
         <div v-if="transactionType === '구입'">
-          <div v-if="selectedExchRate1 && amount">
+          <div id="at_box2" v-if="selectedExchRate1 && amount">
             선택한 국가 환율: {{ parseFloat(selectedExchRate1.replace(/,/g, '')).toFixed(2) }}
             <br>
             환전 결과: {{ (parseFloat(selectedExchRate1.replace(/,/g, '')) * amount).toFixed(2)}} 원

@@ -10,9 +10,15 @@
       />
     </ul>
     <form @submit.prevent="submitComment">
-      <input id='r_comment' v-model="commentContent" type="text"
+      <div id="a">
+        <input id='r_comment' v-model="commentContent" type="text"
         placeholder="댓글을 입력해주세요">
-      <button type="submit">댓글 작성</button>
+        <div id="c_button">
+          <v-btn id="btn1" type="submit" rounded="sm" block size="x-large" color="#FFF176" >
+              댓글 작성
+        </v-btn>
+        </div>
+      </div>
     </form>
   </div>
 </template>
@@ -151,6 +157,11 @@ export default {
   text-align: start;
 }
 
+#a{
+  display: flex;
+
+}
+
 #r_comment{
   width: 60%;
   height: 40px;
@@ -159,5 +170,14 @@ export default {
   margin: 15px;
   padding: 15px;
   border-radius: 20px;
+}
+
+#c_button{
+  width: 100px;
+  margin: 5px;
+  margin-top:15px;
+  /* margin: 0px 30px 0px 30px; */
+  font-weight: 700;
+  align-content: right;
 }
 </style>

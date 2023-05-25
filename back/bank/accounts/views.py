@@ -81,9 +81,9 @@ def userrecommend(request, user_pk):
     db_data = getuser(user_pk)
     print(db_data)
     
-    product_json = open('../../../accounts/fixtures/accounts/depo_info_data326.json', encoding='UTF8')
+    product_json = open('C:/Users/82108/Desktop/AB_finalpjt/back/bank/accounts/fixtures/accounts/depo_info_data326.json', encoding='UTF8')
     product_list = json.load(product_json)
-    json_file_path = '../../../accounts/fixtures/accounts/user_data.json'
+    json_file_path = 'C:/Users/82108/Desktop/AB_finalpjt/back/bank/accounts/fixtures/accounts/user_data.json'
     with open(json_file_path, 'r', encoding='UTF8') as file:
         user_data = json.load(file)
 

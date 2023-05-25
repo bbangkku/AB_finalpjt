@@ -24,8 +24,8 @@
       </v-window>
     </v-card>
 
-    <!-- <div id="with_aris">
-      <div id="aris_bb" v-if="isLogin">
+    <div id="with_aris">
+      <div id="aris_bb" v-if="isLogin && num !== 3">
         <div class="bubble_box" @click="aris()">
           <div class="speech-bubble">
             <div>
@@ -38,7 +38,7 @@
           <img :src="image_url" style="width:380px">
         </div>
       </div>
-    </div> -->
+    </div>
 </div>
 </template>
 
@@ -90,7 +90,7 @@ export default {
         this.num += 1
         this.image_url = require('@/assets/a2.png')
         this.message1 =  `${this.hero} 용사님 환영합니다!`
-        this.message2 = '말풍선을 누르면 진행됩니다'
+        this.message2 = '개인 맞춤형 추천 상품을 눌러보세요 !'
       } else if (this.num===1 && this.path==='/') {
         this.num = 0
         this.image_url = require('@/assets/a3.png')
@@ -107,8 +107,8 @@ export default {
       } else if ( this.path ==='/deposit' && this.num ===1){
         this.num = 0
         this.image_url = require('@/assets/a4.png')
-        this.message1 = '이곳은 예금 상품 페이지입니다!'
-        this.message2 = '상품명을 클릭해보세요'
+        this.message1 = '상단 배너를 클릭하면 대표 상품의'
+        this.message2 = "상세 정보를 확인할 수 있어요 !"
       }
       // 적금
       else if (this.path ==='/installment' && this.num === 0){
@@ -119,8 +119,8 @@ export default {
       } else if ( this.path ==='/installment' && this.num ===1){
         this.num = 0
         this.image_url = require('@/assets/a2.png')
-        this.message1 = '이곳은 적금 상품 페이지입니다!'
-        this.message2 = '상품명을 클릭해보세요'
+        this.message1 = '상단 배너를 클릭하면 대표 상품의'
+        this.message2 = "상세 정보를 확인할 수 있어요 !"
       }
       // 예금 상세
       else if (this.path ===`/deposit_product/${this.$route.params.productId}` && this.num === 0){
@@ -182,10 +182,23 @@ export default {
         this.message2 = '다양한 의견을 나눌 수 있어요 !'
       }
       else if(this.path ==='/community' && this.num === 1){
-        this.num = 0
+        this.num = 2
         this.image_url = require('@/assets/a3.png')
         this.message1 = '올바른 게시판 문화 형성을 위해'
         this.message2 = '건전한 글만 작성해주세요 !'
+      }
+      else if(this.path ==='/community' && this.num === 2){
+        this.num = 3
+      }
+      // 프로필
+      else if(this.path ==='/profile' && this.num === 0){
+        this.num = 1
+        this.image_url = require('@/assets/a2.png')
+        this.message1 = '수정하기 버튼을 눌러'
+        this.message2 = '원하는 내용을 수정할 수 있어요 !'
+      }
+      else if(this.path ==='/profile' && this.num === 1){
+        this.num = 3
       }
 
     },
@@ -194,6 +207,7 @@ export default {
       console.log('path',path)
       // 예금
       if (path==='/deposit'){
+        this.num = 0
         this.image_url = require('@/assets/a4.png')
         this.message1 = '이곳은 예금 상품 페이지입니다!'
         this.message2 = '상품명을 클릭해보세요'
@@ -201,6 +215,7 @@ export default {
       }
       // 적금
       else if (path === '/installment'){
+        this.num = 0
         this.image_url = require('@/assets/a1.png')
         this.message1 = '이곳은 적금 상품 페이지입니다!'
         this.message2 = '상품명을 클릭해보세요'
@@ -211,7 +226,7 @@ export default {
         this.num = 0
         this.path = '/'
         this.message1 =  `${this.hero} 용사님 환영합니다!`
-        this.message2 = '말풍선을 누르면 진행됩니다'
+        this.message2 = '개인 맞춤형 추천 상품을 눌러보세요 !'
       }
       // 예금 상세
       else if(path ===`/deposit_product/${this.$route.params.productId}`){
@@ -253,6 +268,7 @@ export default {
       }
       // 프로필
       else if(path ==='/profile'){
+        this.num = 0
         this.path = '/profile'
         this.image_url = require('@/assets/a2.png')
         this.message1 = '용사님의 정보를 볼 수 있는 '

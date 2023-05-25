@@ -99,8 +99,8 @@ export default {
     },
     addMarkers(data) {
       const markers = [];
-      const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-      const imageSize = new window.kakao.maps.Size(24, 35);
+      const imageSrc = 'https://i.ibb.co/t3BjQRQ/bk.png';
+      const imageSize = new window.kakao.maps.Size(45, 45);
       const imageOption = { offset: new window.kakao.maps.Point(12, 35) };
 
       for (let i = 0; i < data.length; i++) {

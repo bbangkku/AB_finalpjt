@@ -38,6 +38,15 @@ export default new Vuex.Store({
     likeProducts(state) {
       return state.likeProducts;
     },
+    checkProductExists: (state) => (productId) => {
+      // 데이터 소스에서 제품 정보를 확인합니다.
+      // 예시: deposit와 installment 데이터에서 제품 ID를 비교하여 존재 여부를 확인합니다.
+      const depositProduct = state.deposit.find((product) => product.id === productId);
+      const installmentProduct = state.installment.find((product) => product.id === productId);
+  
+      // 제품이 존재하는지 여부를 반환합니다.
+      return depositProduct !== undefined || installmentProduct !== undefined;
+    },
   },
   mutations: {
     // 로그인과 토큰 저장

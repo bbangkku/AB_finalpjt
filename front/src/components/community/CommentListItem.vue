@@ -3,10 +3,12 @@
     <div v-if="check(comment)">
       <div class='comment_box'>
         <p>No.{{comment.id}}</p>
-        <h4>{{ comment?.nickname }} : {{ comment?.content }}</h4>
+        
         <div class="c_box">
-          <div class="a_right">
-            <div id="c_button">
+          <h4>{{ comment?.username }} : {{ comment.content }}</h4>
+          <!-- <div class="a_right"> -->
+            <div id="c_button1">
+              <div id="c_button">
               <form @submit.prevent="editComment(comment)" v-if="isEditing && isUserAuthorized(comment)">
                 <v-btn id="btn" type="submit" rounded="sm" block size="x-large" color="#3F51B5">
                   수정
@@ -21,7 +23,9 @@
                 </v-btn>
               </form>
             </div>
-          </div>
+            </div>
+         
+          <!-- </div> -->
         </div>
       </div>
       <hr />
@@ -34,7 +38,7 @@
         </form>
 
         <form @submit.prevent="updateComment(comment)" v-if="!isEditing && isUserAuthorized(comment)">
-          <v-btn id="btn1" type="submit" rounded="sm" block size="x-large" color="#EF5350">
+          <v-btn id="btn1" type="submit" rounded="sm" block size="x-large" color="#FFF176">
                 확인
           </v-btn>
         </form>        
@@ -183,12 +187,22 @@ div{
   align-content: right;
 }
 
+#c_button1{
+  display: flex;
+}
+
 #btn{
   color: white;
 }
 #btn1{
-  color: white;
+  color: black;
   margin: 15px
 }
-
+.c_box{
+  display: flex;
+  justify-content:space-between;
+}
+h4{
+  margin: 5px;
+}
 </style>

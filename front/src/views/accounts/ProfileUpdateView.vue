@@ -1,21 +1,22 @@
 <template>
   <div id="at_box">
     <h3>회원정보 수정</h3>
+    <br>
     <form @submit.prevent="updateUserProfile">
       <div class="mid">
         <!-- nickname -->
         <div class="mini">
-          <div class="mini"><h4>NICKNAME</h4></div>
-          <input 
-          id='r_comment' 
-          v-model="nickname" type="text"
-          required
-          placeholder="NICKNAME">
+            <h3>NICKNAME</h3>
+            <input 
+              class="pl"
+              v-model="nickname" type="text"
+              required
+              placeholder="NICKNAME">
         </div>
 
         <!-- gender -->
         <div id="mini">
-          <h4>GENDER</h4>
+          <h3>성별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
           <select v-model="gender" class="pl">
             <option disabled value="">성별</option>
             <option value="M">남</option>
@@ -25,9 +26,9 @@
 
         <!-- age -->
         <div id="mini">
-          <h4>AGE</h4>
+          <h3>나이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
           <div>
-            <input id='r_comment' v-model="age" type="number"
+            <input class="pl" v-model="age" type="number"
             required
             placeholder="나이">
           </div>
@@ -35,9 +36,9 @@
 
         <!-- salary -->
         <div id="mini">
-          <h4>SALARY</h4>
+          <h3>연봉&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
           <input
-            id="r_comment"
+            class="pl"
             v-model="salary"
             type="number"
             placeholder="SALARY"/>
@@ -45,15 +46,14 @@
 
         <!-- 가용금액 -->
         <div id="mini">
-          <h4>가용금액</h4>
-
-            <input id='r_comment' v-model="money" type="number"
+          <h3>가용금액&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+            <input class="pl" v-model="money" type="number"
             required
             placeholder="가용 금액">
         </div>
 
         <div id="mini">
-          <h4>주거래 은행</h4>
+          <h3>주거래 은행&nbsp;</h3>
           <select id="bank" v-model="bank" class="pl">
             <option disabled value="">주거래 은행</option>
             <option value="KEB하나은행">KEB하나은행</option>
@@ -66,7 +66,10 @@
             <option value="경남은행">경남은행</option>
           </select>
         </div>
-        <button type="submit">프로필 수정</button>
+        <br>
+        <v-btn rounded="sm" color="#FFF176">
+          <button type="submit">프로필 수정</button>
+      </v-btn>
       </div>
     </form>
   </div>
@@ -133,7 +136,6 @@ export default {
 </script>
 
 <style scoped>
-
 .mini{
   display: flex;
   align-content: center;
@@ -147,6 +149,11 @@ export default {
   flex-direction: row;
   justify-items: center;
 }
+.mid1{
+  display: flex;
+  align-content: space-around;
+}
+
 #box1{
   display: flex;
   flex-direction:column;
@@ -164,11 +171,11 @@ export default {
 }
 
 #r_comment{
-  width: 70%;
+  width: 300px;
   height: 40px;
   text-align: left;
   border: 2px solid rgb(250, 213, 132);
-  /* margin: 15px; */
+  margin: 10px;
   padding: 15px;
   border-radius: 10px;
 }
@@ -186,11 +193,11 @@ export default {
 }
 
 .pl{
-    width: 200px;
+    width: 300px;
     border: 2px solid rgb(250, 213, 132);
     box-sizing: border-box;
     border-radius: 10px;
-    padding: 5px 10px;
+    padding: 10px;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
@@ -205,5 +212,9 @@ export default {
     border-radius: 10px;
     outline: 4px solid #fff4b5;
     border-radius: 10px;
+}
+
+h3{
+  margin: 8px;
 }
 </style>
