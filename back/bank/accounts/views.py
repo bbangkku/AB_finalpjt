@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import User
 from rest_framework.decorators import api_view, permission_classes
-from .serializers import UserSerializer,ProfileSerializer,RecommendSerializer
+from .serializers import UserSerializer
 from rest_framework.permissions import *
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
@@ -14,7 +14,6 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.datasets import make_blobs
 from collections import Counter
-from django.http import HttpRequest,JsonResponse
 
 
 # 회원탈퇴
@@ -29,17 +28,25 @@ def user_delete(request):
         }
     return Response(data, status=status.HTTP_204_NO_CONTENT)
 
-# @permission_classes([IsAuthenticated]) # 인증된 사용자만 권한 허용
-# def userproductchange(request):
-#     pass
 
-@api_view(['GET'])
+@api_view(['put'])
 @permission_classes([IsAuthenticated]) # 인증된 사용자만 권한 허용
-def userproductget(request,user_pk):
+def userproductput(request,user_pk):
     user = get_object_or_404(User, pk=user_pk)
-    serializer = UserSerializer(user)
-    return Response(serializer.data)
+    serializer = UserSerializer(user,data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['delete'])
+@permission_classes([IsAuthenticated]) # 인증된 사용자만 권한 허용
+def userproductdelete(request,user_pk):
+    user = get_object_or_404(User, pk=user_pk)
+    serializer = UserSerializer(user,data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 # Create your views here.
@@ -54,17 +61,6 @@ def userchange(request):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-
-
-
-
-
-
-
-
-
-
-
 db_data = {}
 def getuser(user_pk):
     user = get_user_model().objects.get(id=user_pk)
@@ -74,8 +70,6 @@ def getuser(user_pk):
     print(db_data)
     return db_data
 # db user는 잘 저장되었고,, 
-
-
 
 
 # 성별, 나이, 연봉, 자산이 비슷한 사람들이 가입한 상품을 출력
@@ -89,12 +83,10 @@ def userrecommend(request, user_pk):
     
     product_json = open('C:/Users/SSAFY/Desktop/21321/AB_finalpjt/back/bank/accounts/fixtures/accounts/depo_info_data326.json', encoding='UTF8')
     product_list = json.load(product_json)
-    json_file = open('C:/Users/SSAFY/Desktop/21321/AB_finalpjt/back/bank/accounts/fixtures/accounts/user_data.json', encoding='UTF8')
-    user_data = json.load(json_file)
-    
-    # with open(json_file, 'r', encoding='UTF8') as file:
-    #     user_data = json.load(file)
-    
+    json_file_path = 'C:/Users/SSAFY/Desktop/21321/AB_finalpjt/back/bank/accounts/fixtures/accounts/user_data.json'
+    with open(json_file_path, 'r', encoding='UTF8') as file:
+        user_data = json.load(file)
+
     
     # 로그인된 유저 성별 숫자로 바꿔주고
     if db_data['gender'] == "F":
@@ -105,10 +97,12 @@ def userrecommend(request, user_pk):
         db_data['financial_products'] = ""
     # DB 데이터를 JSON 데이터에 추가
     user_data.append(db_data)
+    # 이전에 열었던 파일 객체 닫기
+
+    
     # JSON 파일에 쓰기
-    # with open(json_file, 'w', encoding='UTF8') as file:
-    #     json.dump(user_data, file, ensure_ascii=False, indent=4)
-        
+    with open(json_file_path, 'w', encoding='UTF8') as file:
+        json.dump(user_data, file, ensure_ascii=False, indent=4)
     
 
     # 각 항목의 평균을 계산해서 중심점을 잡아줄 것
@@ -133,11 +127,11 @@ def userrecommend(request, user_pk):
     init_centers = np.array([[gender_mean, age_mean, money_mean, salary_mean]] * 4)
     print('assssssssssssssssssssssssssssssssssssssssssss')
 
-    df_user = pd.DataFrame(user_data)
-    data = df_user[['age','gender','salary','money']]
 
     ## 엘보우 기법 
     # Elbow = []
+    df_user = pd.DataFrame(user_data)
+    data = df_user[['age','gender','salary','money']]
 
     # for k in range(1,11):
     #   kmeans = KMeans(n_clusters=k)
@@ -153,7 +147,8 @@ def userrecommend(request, user_pk):
 
     # KMeans 클러스터링 사용
     k = 4
-    kmeans = KMeans(n_clusters=k,init=init_centers ,random_state=0,n_init=10)
+    
+    kmeans = KMeans(n_clusters=k,init=init_centers,random_state=0,n_init=10)
     kmeans.fit(data)
     print('assssssssssssssssssssssssssssssssssssssssssss')
 
@@ -193,8 +188,5 @@ def userrecommend(request, user_pk):
                 user_recommend_list_list.append(user_recommend_list)
                 break
     print(user_recommend_list_list)
-            # print(i['product'])
-            # j[0] = i['product']
-            # break 
-    # print(j)
+
     return Response(user_recommend_list_list)

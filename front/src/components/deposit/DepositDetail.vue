@@ -146,25 +146,12 @@
         <h3>{{ product.etc_note }}</h3>
       </v-card-subtitle>
 
-      <v-btn
-          color="orange-lighten-2"
-          variant="text"
-          @click="addProduct"
-        >
-          가입하기
-        </v-btn>
-
-        <v-btn
-          color="orange-lighten-2"
-          variant="text"
-          @click="minusProduct"
-        >
+        <v-btn v-if="btn" color="orange-lighten-2" variant="text" @click="addProduct">
           해지하기
         </v-btn>
-
-        <!-- <v-btn color="orange-lighten-2" variant="text" @click="addProduct">
-          {{ btn }}
-        </v-btn> -->
+        <v-btn v-else color="orange-lighten-2" variant="text" @click="addProduct">
+          가입하기
+        </v-btn>
         <v-spacer></v-spacer>
   </div>
   </div>
@@ -184,7 +171,7 @@ export default {
       product: {},
       reveal: false,
       show: false,
-
+      pro: '',
     };
   },
   created() {
@@ -192,25 +179,15 @@ export default {
     this.fetchProductName(this.productId);
   },
   computed:{
-    isProductIn(){
-      const product = this.$store.state.loginUser.financial_products.find(
-        (item) => item.fin_prdt_nm === this.product.fin_prdt_nm
-      )
-      console.log('product',product)
-      console.log('item',this.fin_prdt_nm)
-      console.log('this',this.product.fin_prdt_nm)
-      // 일치하면 true 아니면 false
-      return !!product
-    },
-    //     btn() {
-    //   return this.btnn ? "가입하기" : "해지하기";
-    // },
+    btn() {
+      return this.$store.state.loginUser.financial_products.includes(this.product.fin_prdt_nm)
+    }
   }
   ,
   methods: {
-    // isProductIn(bl) {
-    //   this.btnn = bl;
-    // },
+    isProductIn(bl) {
+      this.btn = bl;
+    },
     fetchProductName(productId) {
       console.log(productId)
       axios
@@ -224,65 +201,98 @@ export default {
           console.error(error);
         });
     },
-    addProduct() {
-      const updatedProducts = this.$store.state.loginUser.financial_products;
-      console.log(updatedProducts, "업뎃");
-      console.log(this.product.fin_prdt_nm, "상품명");
-      // this.isProductIn(updatedProducts.includes(this.product.fin_prdt_nm));
-      // console.log(updatedProducts)
-      // console.log(this.product.fin_prdt_nm)
-      if (updatedProducts.includes(this.product.fin_prdt_nm)) {
-        const index = updatedProducts.indexOf(this.product.fin_prdt_nm);
-        if (index > -1) {
-          updatedProducts.splice(index, 1);
-        }
-        this.$store.commit("DELETEPRODUCT", updatedProducts);
-        axios({
-          method: "delete",
-          url: `${API_URL}/bank_api/deleteproduct/${this.$store.state.loginUser.id}`,
-          headers: {
-            Authorization: `Token ${this.$store.state.token}`,
-          },
-        })
-          .then((res) => {
-            console.log("res", res);
-            this.comments = res.data;
-            console.log(this.comments, "comments");
-          })
-          .catch((err) => {
-            console.log(err);
-            this.comments = [];
-          });
-      } else {
-        console.log(this.product);
-        console.log(this.product.fin_prdt_nm);
-        updatedProducts.push(this.product.fin_prdt_nm);
-        this.$store.commit("ADDPRODUCT", updatedProducts);
-        axios({
-          method: "post",
-          url: `${API_URL}/bank_api/addproduct/${this.$store.state.loginUser.id}/${this.product.fin_prdt_nm}`,
-          headers: {
-            Authorization: `Token ${this.$store.state.token}`,
-          },
-        })
-          .then((res) => {
-            console.log("res", res);
-            this.comments = res.data;
-            console.log(this.comments, "comments");
-          })
-          .catch((err) => {
-            console.log(err);
-            this.comments = [];
-          });
-      }
+
+    addProduct(){
+    const updatedProducts = this.$store.state.loginUser.financial_products
+    const productIndex = updatedProducts.indexOf(this.product.fin_prdt_nm);
+    this.isProductIn(updatedProducts.includes(this.product.fin_prdt_nm));
+    console.log(this.product.fin_prdt_nm)
+    if (productIndex !== -1) {
+      // 이미 해당 상품이 있으면 삭제
+      updatedProducts.splice(productIndex, 1);
+    } else {
+      // 해당 상품이 없으면 추가
+      updatedProducts.push(this.product.fin_prdt_nm)
+    }
+    this.$store.commit('ADDPRODUCT',updatedProducts)
+    const requestData = {
+      updatedProducts: updatedProducts,
+      pro : 'd',
+    }
+    axios({
+      method: "post",
+      url: `${API_URL}/bank_api/addproduct/${this.$store.state.loginUser.id}/${this.productId}/`,
+      headers: {
+        Authorization: `Token ${this.$store.state.token}`,
+      },
+      data: requestData,
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+    // addProduct() {
+    //   const updatedProducts = this.$store.state.loginUser.financial_products;
+    //   console.log(updatedProducts, "업뎃");
+    //   console.log(this.product.fin_prdt_nm, "상품명");
+    //   // this.isProductIn(updatedProducts.includes(this.product.fin_prdt_nm));
+    //   // console.log(updatedProducts)
+    //   // console.log(this.product.fin_prdt_nm)
+    //   if (updatedProducts.includes(this.product.fin_prdt_nm)) {
+    //     const index = updatedProducts.indexOf(this.product.fin_prdt_nm);
+    //     if (index > -1) {
+    //       updatedProducts.splice(index, 1);
+    //     }
+    //     this.$store.commit("DELETEPRODUCT", updatedProducts);
+    //     axios({
+    //       method: "delete",
+    //       url: `${API_URL}/bank_api/deleteproduct/${this.$store.state.loginUser.id}`,
+    //       headers: {
+    //         Authorization: `Token ${this.$store.state.token}`,
+    //       },
+    //     })
+    //       .then((res) => {
+    //         console.log("res", res);
+    //         this.comments = res.data;
+    //         console.log(this.comments, "comments");
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    //         this.comments = [];
+    //       });
+    //   } else {
+    //     console.log(this.product);
+    //     console.log(this.product.fin_prdt_nm);
+    //     updatedProducts.push(this.product.fin_prdt_nm);
+    //     this.$store.commit("ADDPRODUCT", updatedProducts);
+    //     axios({
+    //       method: "post",
+    //       url: `${API_URL}/bank_api/addproduct/${this.$store.state.loginUser.id}/${this.product.fin_prdt_nm}`,
+    //       headers: {
+    //         Authorization: `Token ${this.$store.state.token}`,
+    //       },
+    //     })
+    //       .then((res) => {
+    //         console.log("res", res);
+    //         this.comments = res.data;
+    //         console.log(this.comments, "comments");
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    //         this.comments = [];
+    //       });
+    //   }
     },
     minusProduct(){
       const updatedProducts = this.$store.state.loginUser.financial_products
       updatedProducts.delete(this.product.fin_prdt_nm)
       this.$store.commit('DELETEPRODUCT',updatedProducts)
     }, 
-    },
-}
+    }
+
 
 </script>
 

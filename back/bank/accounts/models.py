@@ -12,20 +12,6 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    # def create_superuser(self, email, password, **extra_fields):
-    #     """
-    #     Create and save a SuperUser with the given email and password.
-    #     """
-    #     extra_fields.setdefault('is_staff', True)
-    #     extra_fields.setdefault('is_superuser', True)
-    #     extra_fields.setdefault('is_active', True)
-
-    #     if extra_fields.get('is_staff') is not True:
-    #         raise ValueError(_('Superuser must have is_staff=True.'))
-    #     if extra_fields.get('is_superuser') is not True:
-    #         raise ValueError(_('Superuser must have is_superuser=True.'))
-    #     return self.create_user(email, password, **extra_fields)
-
     def create_superuser(self, username, password=None, **other):
         user = self.create_user(username, password, **other)
         user.is_superuser = True
@@ -38,25 +24,6 @@ class User(AbstractBaseUser):
     GENDER_CHOICES = (
         ('M', '남성'),
         ('F', '여성'),
-    )
-    AGE_CHOICES = (
-        ('0-10', '0 ~ 10'),
-        ('10-20', '10 ~ 20'),
-        ('20-30', '20 ~ 30'),
-        ('30-40', '30 ~ 40'),
-        ('40-50', '40 ~ 50'),
-        ('50-60', '50 ~ 60'),
-        ('60-70', '60 ~ 70'),
-        ('70-80', '70 ~ 80'),
-        ('80-100', '80 ~ 100')
-    )
-    AMOUNT_CHOICES = (
-        ('0-30M', '0 ~ 30,000,000'),
-        ('30M-100M', '30,000,000 ~ 100,000,000'),
-        ('100M-300M', '100,000,000 ~ 300,000,000'),
-        ('300M-1000M', '300,000,000 ~ 1,000,000,000'),
-        ('1000M 이상', '1,000,000,000 ~ 1,000,000,000,000,000,000,000,000,000'),
-        
     )
     BANK_CHOICES = (
         ('KEB하나은행','KEB하나은행'),
@@ -78,7 +45,6 @@ class User(AbstractBaseUser):
         ('한국수출입은행','한국수출입은행'),
         ('기타','기타')
     )   
-    # email = models.EmailField(_('email address'), unique=True)
     USERNAME_FIELD = 'username'
     # REQUIRED_FIELDS = []
     email = models.EmailField(max_length=254, blank=True, null=True)
@@ -86,15 +52,13 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=30,unique=True)
     nickname = models.CharField(max_length=10)
     gender = models.CharField(max_length=3, choices=GENDER_CHOICES)
-    age = models.CharField(max_length=5)
+    age = models.CharField(max_length=3)
     money = models.CharField(max_length=30)
-    salary = models.CharField(max_length=10)
+    salary = models.CharField(max_length=15)
     bank = models.CharField(max_length=10,choices=BANK_CHOICES)
     financial_products = models.ManyToManyField(Subscribe_Products,blank=True, null=True)
     like_financial_products = models.ManyToManyField(Like_Products,blank=True, null=True)
 
-    
-    
     # superuser fields
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -124,7 +88,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         money = data.get("money")
         salary = data.get("salary")
         financial_products = data.get("financial_products")
-        like_financial_products = data.get("like_financial_products")
+        # like_financial_products = data.get("like_financial_products")
 
         bank = data.get("bank")
 
@@ -153,12 +117,12 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             if len(financial_products) > 1:
                 financial_products = ','.join(financial_products)
             user_field(user, "financial_products", financial_products)
-        if like_financial_products:
-            like_financial_products = user.like_financial_products.split(',')
-            like_financial_products.append(like_financial_products)
-            if len(like_financial_products) > 1:
-                like_financial_products = ','.join(like_financial_products)
-            user_field(user, "like_financial_products", like_financial_products)
+        # if like_financial_products:
+        #     like_financial_products = user.like_financial_products.split(',')
+        #     like_financial_products.append(like_financial_products)
+        #     if len(like_financial_products) > 1:
+        #         like_financial_products = ','.join(like_financial_products)
+        #     user_field(user, "like_financial_products", like_financial_products)
 
 
         if "password1" in data:
@@ -172,3 +136,4 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             # this adapter by adding
             user.save()
         return user
+

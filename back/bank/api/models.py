@@ -1,8 +1,6 @@
 from django.db import models
 from django.conf import settings
 
-
-# Create your models here.
 class DepositProducts(models.Model):
     fin_prdt_cd = models.TextField(unique=True)
     kor_co_nm = models.TextField()
@@ -13,7 +11,7 @@ class DepositProducts(models.Model):
     join_way =  models.TextField()
     spcl_cnd = models.TextField()
     # 가입한 유저
-    sub_user = models.TextField()
+    sub_user = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True, null=True)
 
 class DepositOptions(models.Model):
     fin_prdt_cd = models.ForeignKey(DepositProducts, on_delete=models.CASCADE, related_name='depositoption')
@@ -47,7 +45,8 @@ class InstallmentProducts(models.Model):
     # 만기 후 이자율
     mtrt_int = models.TextField()
     # 가입한 유저
-    sub_user = models.TextField()    
+    sub_user = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True, null=True)
+        
 class InstallmentOptions(models.Model):
     fin_prdt_cd = models.ForeignKey(InstallmentProducts, on_delete=models.CASCADE, related_name='installmentoption')
     # 저축 금리 유형명

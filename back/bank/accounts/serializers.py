@@ -17,52 +17,6 @@ class UserSerializer(serializers.ModelSerializer):
         
         extra_kwargs = {'password': {'write_only': True}}
 
-#     def create(self, validated_data):
-#         password = validated_data.pop('password1')
-#         user = User(**validated_data)
-#         user.set_password(password)
-#         user.save()
-#         return user
-
-    # def save(self, request=None):
-    #     # allauth 의 기본 adaper 를 가져옴
-    #     adapter = get_adapter()
-    #     user = adapter.new_user(request)
-    #     self.cleaned_data = self.get_cleaned_data()
-    #     # 기본 adapter 의 save_user 는 nickname 필드를 저장하지 않는다!
-    #     user = adapter.save_user(request, user, self, commit=False)
-    #     if "password1" in self.cleaned_data:
-    #         try:
-    #             adapter.clean_password(self.cleaned_data['password1'], user=user)
-    #         except DjangoValidationError as exc:
-    #             raise serializers.ValidationError(
-    #                 detail=serializers.as_serializer_error(exc)
-    #             )
-    #     user.save()
-    #     self.custom_signup(request, user)
-    #     setup_user_email(request, user, [])
-    #     return user
-    
-    # def create(self, validated_data):
-    #     password = validated_data.pop('password')
-    #     member = User(**validated_data)
-    #     member.set_password(password)
-    #     member.save()
-    #     return member
-
-
-# 회원가입 로직 중 일부
-# def create(self, validated_data):
-#     # 토큰 발급
-#     user = self.Meta.model.objects.create_user(**validated_data)
-#     refresh = RefreshToken.for_user(user)
-
-#     return {
-#         'user': user,
-#         'refresh': str(refresh),
-#         'access': str(refresh.access_token),
-#     }
-
 
 # 유저 회원 가입시 사용
 
@@ -148,15 +102,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'gender', 'age', 'money','salary', 'bank']
         extra_kwargs = {'password': {'write_only': True}}
-
-
-
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['nickname', 'gender', 'age', 'money','salary', 'bank']
-        extra_kwargs = {'password': {'write_only': True}}
-
 
 class RecommendSerializer(serializers.ModelSerializer):
     class Meta:

@@ -4,7 +4,6 @@ from django.conf import settings
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import *
-# from ..accounts.serializers import UserSerializer
 import requests
 from django.shortcuts import get_object_or_404
 from accounts.models import User
@@ -174,6 +173,7 @@ def d_detail(request, product_id):
         try:
             product = DepositProducts.objects.get(fin_prdt_cd=product_id)
             serializer = DepositProductsSerializer(product)
+            print(serializer.data,'sssssssssssssssssssssss')
             return JsonResponse({'success': True, 'product': serializer.data})
         # 일치하는 상품이 없을 경우 예외처리
         except DepositProducts.DoesNotExist:
@@ -196,26 +196,26 @@ def i_detail(request, product_id):
 
 # 유저가 가입한 상품 조회 및 수정
 
-@api_view(['PUT','POST','DELETE','GET'])
-def userproductchange(request,user_pk,product1_pk):
-    user = get_object_or_404(User, pk=user_pk)
-    product = get_object_or_404(DepositProducts,)
+# @api_view(['PUT','POST','DELETE','GET'])
+# def userproductchange(request,user_pk,product1_pk):
+#     user = get_object_or_404(User, pk=user_pk)
+#     product = get_object_or_404(DepositProducts,)
     # product = 
     # serializer = UserSerializer(user)
     # return Response(serializer.data)
 
 
-@api_view(['GET','POST','PUT','DELETE'])
-def subscribe(request, product_id, username):
-    product = InstallmentProducts.objects.get(id=product_id)
-    product1 = DepositProducts.objects.get(id=product_id)
+# @api_view(['GET','POST','PUT','DELETE'])
+# def subscribe(request, product_id, username):
+#     product = InstallmentProducts.objects.get(id=product_id)
+#     product1 = DepositProducts.objects.get(id=product_id)
 
-    user = User.objects.get(username=username)
-    if request.method == "GET":
-        pass
-    elif request.method == "POST":
-        serializer = SubInstSerializer(data=request.data)
-        serializer1 = SubDepoSerializer(data=request.data)
+#     user = User.objects.get(username=username)
+#     if request.method == "GET":
+#         pass
+#     elif request.method == "POST":
+#         serializer = SubInstSerializer(data=request.data)
+#         serializer1 = SubDepoSerializer(data=request.data)
         # if serializer.is_valid() or serializer1.is_valid():
         # serializers = InstallmentProductsSerializer(product)
         # print(serializers)
@@ -246,19 +246,24 @@ def like(request, user_id):
 @api_view(['POST','GET'])
 def addproduct(request,fin_prdt_cd,user_pk):
     if request.method == 'POST':
-        product = InstallmentProducts.objects.get(fin_prdt_cd=fin_prdt_cd)
-        product1 = DepositProducts.objects.get(fin_prdt_cd=fin_prdt_cd)
-        if product.sub_user.filter(pk=user_pk).exists():
-            product.sub_user.remove(request.user)
-        if product1.sub_user.filter(pk=user_pk).exists():
-            product1.sub_user.remove(request.user)
-        if not product1.sub_user.filter(pk=user_pk).exists():
-            product1.sub_user.add(request.user)
-        if not product.sub_user.filter(pk=user_pk).exists():
-            product.sub_user.add(request.user)
-        print(product.sub_user)
-        print(product1.sub_user)
-        return                 
+        if request.data['pro'] == 'i':
+            product = InstallmentProducts.objects.get(fin_prdt_cd=fin_prdt_cd)
+            if product.sub_user.filter(pk=user_pk).exists():
+                product.sub_user.remove(request.user)
+            elif product.sub_user.filter(pk=user_pk).exists():
+                product.sub_user.add(request.user)
+            sub_user_list = list(product.sub_user.values())  # sub_user 필드의 데이터 추출
+            return  JsonResponse({'sub_user' : sub_user_list})           
+                
+        else:
+            product1 = DepositProducts.objects.get(fin_prdt_cd=fin_prdt_cd)
+            if product1.sub_user.filter(pk=user_pk).exists():
+                product1.sub_user.remove(request.user)
+            if not product1.sub_user.filter(pk=user_pk).exists():
+                product1.sub_user.add(request.user)
+            sub_user_list = list(product1.sub_user.values())  # sub_user 필드의 데이터 추출
+
+            return  JsonResponse({'sub_user' : sub_user_list})           
 
             
         

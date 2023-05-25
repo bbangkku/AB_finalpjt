@@ -52,7 +52,7 @@ from collections import OrderedDict
 file = OrderedDict()
 
 username_list = []
-N = 1000
+N = 10000
 i = 0
 
 while i < N:

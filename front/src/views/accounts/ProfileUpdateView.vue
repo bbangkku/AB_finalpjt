@@ -26,17 +26,11 @@
         <!-- age -->
         <div id="mini">
           <h4>AGE</h4>
-          <select id="age" v-model="age" class="pl">
-            <option disabled value="">나이</option>
-            <option value="0-10">0 ~ 10</option>
-            <option value="10-20">10 ~ 20</option>
-            <option value="20-30">20 ~ 30</option>
-            <option value="30-40">30 ~ 40</option>
-            <option value="40-50">40 ~ 50</option>
-            <option value="50-60">50 ~ 60</option>
-            <option value="60-70">60 ~ 70</option>
-            <option value="70-80">70 ~ 80</option>
-          </select>
+          <div>
+            <input id='r_comment' v-model="age" type="number"
+            required
+            placeholder="나이">
+          </div>
         </div>
 
         <!-- salary -->
@@ -52,13 +46,10 @@
         <!-- 가용금액 -->
         <div id="mini">
           <h4>가용금액</h4>
-          <select id="money" v-model="money" class="pl">
-            <option disabled value="">가용 금액</option>
-            <option value="0-30M">0 ~ 30,000,000</option>
-            <option value="30M-100M">30,000,000 ~ 100,000,000</option>
-            <option value="100M-300M">100,000,000 ~ 300,000,000</option>
-            <option value="300M-1000M">300,000,000 ~ 1,000,000,000</option>
-          </select>
+
+            <input id='r_comment' v-model="money" type="number"
+            required
+            placeholder="가용 금액">
         </div>
 
         <div id="mini">

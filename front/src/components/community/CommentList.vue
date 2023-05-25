@@ -62,7 +62,6 @@ export default {
         },
       })
         .then((res) => {
-          // console.log(res,'res')
           this.comments = res.data;
           console.log(this.comments,'comments')
         })
@@ -103,7 +102,6 @@ export default {
       // this.$set(comment, "isEditing", true);
     },
     updateCommentContent(updatedContent) {
-      // console.log(updatedContent.content,'받을수있냐')
       const index = this.comments.findIndex(comment => comment.id===updatedContent.id)
       if(index !== -1){
         this.comments[index].content = updatedContent

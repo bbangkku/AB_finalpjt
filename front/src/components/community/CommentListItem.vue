@@ -3,7 +3,7 @@
     <div v-if="check(comment)">
       <div class='comment_box'>
         <p>No.{{comment.id}}</p>
-        <h4>{{ comment?.username }} : {{ comment.content }}</h4>
+        <h4>{{ comment?.username }} : {{ comment?.content }}</h4>
         <div class="c_box">
           <div class="a_right">
             <div id="c_button">
@@ -65,7 +65,10 @@ export default {
     comment: Object
   },
   computed: {
-
+  
+  },
+  created(){
+    this.getArticles();
   },
   methods: {
     check(comment) {
@@ -86,6 +89,7 @@ export default {
       })
         .then((res) => {
           this.comments = res.data;
+          console.log("또가져와")
         })
         .catch((err) => {
           console.log(err);
@@ -102,8 +106,9 @@ export default {
         content: this.form.updateContent,
         username: comment.username,
         id: comment.id
-      };
-      this.$emit('comment-updated', data)
+      }
+
+      this.$emit('comment-updated', JSON.stringify(data))
       axios({
         method: "put",
         url: `${API_URL}/api/v1/articles/${this.$route.params.id}/comments/${comment.id}/`,
@@ -114,6 +119,7 @@ export default {
       })
         .then(() => {
           this.isEditing = true;
+          console.log('가져와')
         })
         .catch((err) => {
           console.log(err);
@@ -129,7 +135,6 @@ export default {
       })
         .then((res) => {
           console.log("댓글삭제", res);
-          this.getComments();
           // 스토어에있는거지우거나, getcomments를하거나
           // this.$router.go(this.$router.currentRoute);
         })
