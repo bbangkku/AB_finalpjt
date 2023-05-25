@@ -49,7 +49,13 @@
               </select>
             </div>
 
-            <div id="mini">
+
+          <div>
+            <input id='r_comment' v-model="age" type="number"
+            required
+            placeholder="나이">
+          </div>
+            <!-- <div id="mini">
               <select id="age" v-model="age" required class="pl">
                 <option disabled value="">나이</option>
                 <option value="0-10">0세 ~ 10세</option>
@@ -62,9 +68,13 @@
                 <option value="70-80">70세 ~ 80세</option>
                 <option value="80 up">80세 이상</option>
               </select>
-            </div>
-
-            <div id="mini">
+            </div> -->
+          <div>
+            <input id='r_comment' v-model="money" type="number"
+            required
+            placeholder="가용 금액">
+          </div>
+            <!-- <div id="mini">
               <select id="money" v-model="money" required class="pl">
                 <option disabled value="">가용 금액</option>
                 <option value="0-30M">0 ~ 3,000만원</option>
@@ -73,7 +83,7 @@
                 <option value="300M-1000M">3억 ~ 10억</option>
                 <option value="1000M UP">10억 이상</option>
               </select>
-            </div>
+            </div> -->
 
             <div id="mini">
               <select id="bank" v-model="bank" class="pl">

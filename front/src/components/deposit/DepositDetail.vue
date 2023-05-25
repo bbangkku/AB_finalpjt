@@ -162,6 +162,9 @@
           해지하기
         </v-btn>
 
+        <!-- <v-btn color="orange-lighten-2" variant="text" @click="addProduct">
+          {{ btn }}
+        </v-btn> -->
         <v-spacer></v-spacer>
   </div>
   </div>
@@ -198,10 +201,16 @@ export default {
       console.log('this',this.product.fin_prdt_nm)
       // 일치하면 true 아니면 false
       return !!product
-    }
+    },
+    //     btn() {
+    //   return this.btnn ? "가입하기" : "해지하기";
+    // },
   }
   ,
   methods: {
+    // isProductIn(bl) {
+    //   this.btnn = bl;
+    // },
     fetchProductName(productId) {
       console.log(productId)
       axios
@@ -215,24 +224,57 @@ export default {
           console.error(error);
         });
     },
-    addProduct(){
-      const updatedProducts = this.$store.state.loginUser.financial_products
-      updatedProducts.push(this.product.fin_prdt_nm)
-      this.$store.commit('ADDPRODUCT',updatedProducts)
-      axios({
-        method: "put",
-        url: `${API_URL}/dj-rest-auth/user/change/`,
-        headers: {
-          Authorization: `Token ${this.$store.state.token}`,
-        },
-        data: updatedProducts,
-      })
-        .then((res) => {
-          console.log(res);
+    addProduct() {
+      const updatedProducts = this.$store.state.loginUser.financial_products;
+      console.log(updatedProducts, "업뎃");
+      console.log(this.product.fin_prdt_nm, "상품명");
+      // this.isProductIn(updatedProducts.includes(this.product.fin_prdt_nm));
+      // console.log(updatedProducts)
+      // console.log(this.product.fin_prdt_nm)
+      if (updatedProducts.includes(this.product.fin_prdt_nm)) {
+        const index = updatedProducts.indexOf(this.product.fin_prdt_nm);
+        if (index > -1) {
+          updatedProducts.splice(index, 1);
+        }
+        this.$store.commit("DELETEPRODUCT", updatedProducts);
+        axios({
+          method: "delete",
+          url: `${API_URL}/bank_api/deleteproduct/${this.$store.state.loginUser.id}`,
+          headers: {
+            Authorization: `Token ${this.$store.state.token}`,
+          },
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((res) => {
+            console.log("res", res);
+            this.comments = res.data;
+            console.log(this.comments, "comments");
+          })
+          .catch((err) => {
+            console.log(err);
+            this.comments = [];
+          });
+      } else {
+        console.log(this.product);
+        console.log(this.product.fin_prdt_nm);
+        updatedProducts.push(this.product.fin_prdt_nm);
+        this.$store.commit("ADDPRODUCT", updatedProducts);
+        axios({
+          method: "post",
+          url: `${API_URL}/bank_api/addproduct/${this.$store.state.loginUser.id}/${this.product.fin_prdt_nm}`,
+          headers: {
+            Authorization: `Token ${this.$store.state.token}`,
+          },
+        })
+          .then((res) => {
+            console.log("res", res);
+            this.comments = res.data;
+            console.log(this.comments, "comments");
+          })
+          .catch((err) => {
+            console.log(err);
+            this.comments = [];
+          });
+      }
     },
     minusProduct(){
       const updatedProducts = this.$store.state.loginUser.financial_products

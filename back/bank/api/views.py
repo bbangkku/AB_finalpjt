@@ -8,7 +8,7 @@ from .serializer import *
 import requests
 from django.shortcuts import get_object_or_404
 from accounts.models import User
-
+from rest_framework import status
 
 
 BASE_URL = 'http://finlife.fss.or.kr/'
@@ -207,13 +207,21 @@ def userproductchange(request,user_pk,product1_pk):
 
 @api_view(['GET','POST','PUT','DELETE'])
 def subscribe(request, product_id, username):
+    product = InstallmentProducts.objects.get(id=product_id)
+    product1 = DepositProducts.objects.get(id=product_id)
+
+    user = User.objects.get(username=username)
     if request.method == "GET":
-        product = InstallmentProducts.objects.get()
-        print(product)
+        pass
+    elif request.method == "POST":
+        serializer = SubInstSerializer(data=request.data)
+        serializer1 = SubDepoSerializer(data=request.data)
+        # if serializer.is_valid() or serializer1.is_valid():
         # serializers = InstallmentProductsSerializer(product)
         # print(serializers)
         # if serializers.is_valid(raise_exception=True):
-            
+            # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+     
     # user = User.objects.get(pk=user_id)
     
     # if user.financial_products.filter(pk=request.user_id).exists():
@@ -234,3 +242,34 @@ def like(request, user_id):
         user.like_financial_products.add(request.user)
 
 
+
+@api_view(['POST','GET'])
+def addproduct(request,fin_prdt_cd,user_pk):
+    if request.method == 'POST':
+        product = InstallmentProducts.objects.get(fin_prdt_cd=fin_prdt_cd)
+        product1 = DepositProducts.objects.get(fin_prdt_cd=fin_prdt_cd)
+        if product.sub_user.filter(pk=user_pk).exists():
+            product.sub_user.remove(request.user)
+        if product1.sub_user.filter(pk=user_pk).exists():
+            product1.sub_user.remove(request.user)
+        if not product1.sub_user.filter(pk=user_pk).exists():
+            product1.sub_user.add(request.user)
+        if not product.sub_user.filter(pk=user_pk).exists():
+            product.sub_user.add(request.user)
+        print(product.sub_user)
+        print(product1.sub_user)
+        return                 
+
+            
+        
+    #     if serializer.is_valid(raise_exception=True):
+    #         serializer.save()
+    #         return Response(data=serializer.data, status=status.HTTP_200_OK)
+    # elif request.method == "DELETE":
+        
+    
+        # sub_user = request.user.username
+        # if serializers.data['sub_user']:
+        #     serializers.data['sub_user'].append(sub_user)
+        # else:
+        #     serializers.data['sub_user'] = sub_user

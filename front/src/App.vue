@@ -24,7 +24,7 @@
       </v-window>
     </v-card>
 
-    <div id="with_aris">
+    <!-- <div id="with_aris">
       <div id="aris_bb" v-if="isLogin">
         <div class="bubble_box" @click="aris()">
           <div class="speech-bubble">
@@ -38,7 +38,7 @@
           <img :src="image_url" style="width:380px">
         </div>
       </div>
-    </div>
+    </div> -->
 </div>
 </template>
 

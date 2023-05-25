@@ -31,7 +31,17 @@ class InstallmentOptionsSerializer(serializers.ModelSerializer):
         read_only_fields = ('fin_prdt_cd',)
         
         
-
+class SubInstSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InstallmentProducts
+        fields = ('sub_user',)
+        # read_only_fields
+class SubDepoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DepositProducts
+        fields = ('sub_user',)
+        
+        
 # class ProductSerializer(serializers.ModelSerializer):
 #     class UserSerializer(serializers.ModelSerializer):
 #         class Meta:
