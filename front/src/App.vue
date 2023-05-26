@@ -331,7 +331,7 @@ h4{
 
 #aris {
   width: 450px;
-  height: 400px;
+  height: 390px;
   position: fixed;
   bottom:-18%;
   /* top:64%; */

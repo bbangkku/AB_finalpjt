@@ -166,7 +166,7 @@ export default new Vuex.Store({
           // localStorage.setItem("Token", res.data.key);
           commit("SAVE_TOKEN", res.data.key);
           dispatch("getUser");
-          router.push({ name: "home" });
+          router.push({ name: "profile" });
         })
         .catch((err) => {
           console.log(err);

@@ -52,30 +52,25 @@
           </div>
           <!-- 나이 -->
           <div>
-            <select id="age" v-model="age" required class="pl">
-              <option disabled value="">나이</option>
-              <option value="0-10">0세 ~ 10세</option>
-              <option value="10-20">10세 ~ 20세</option>
-              <option value="20-30">20세 ~ 30세</option>
-              <option value="30-40">30세 ~ 40세</option>
-              <option value="40-50">40세 ~ 50세</option>
-              <option value="50-60">50세 ~ 60세</option>
-              <option value="60-70">60세 ~ 70세</option>
-              <option value="70-80">70세 ~ 80세</option>
-              <option value="80 up">80세 이상</option>
-            </select>
-          </div>
+              <input
+                v-model="age"
+                type="number"
+                required
+                placeholder="나이"
+                class="pl"
+              />
+            </div>
+          
           <!-- 가용금액 -->
           <div>
-            <select id="money" v-model="money" required class="pl">
-              <option disabled value="">가용 금액</option>
-              <option value="0-30M">0 ~ 3,000만원</option>
-              <option value="30M-100M">3,000만원 ~ 1억</option>
-              <option value="100M-300M">1억 ~ 3억</option>
-              <option value="300M-1000M">3억 ~ 10억</option>
-              <option value="1000M UP">10억 이상</option>
-            </select>
-          </div>
+              <input
+                v-model="money"
+                type="number"
+                required
+                placeholder="가용 금액"
+                class="pl"
+              />
+            </div>
           <!-- 주거래은행 -->
           <div>
             <select id="bank" v-model="bank" class="pl">

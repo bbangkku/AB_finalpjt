@@ -25,21 +25,6 @@
             <label for="search_bank">&nbsp; &nbsp;&nbsp;은행검색  🔍</label>
             <span class="span1"></span>
           </div>
-        
-          <!-- <v-card-text style="width: 300px; height: 70px; align-items: center; margin-bottom: 10px;">
-            <v-text-field
-              v-model="search"
-              :loading="loading"
-              density="compact"
-              variant="solo"
-              label="은행 검색"
-              append-icon="mdi-magnify"
-              single-line
-              hide-details
-              @click:append-inner="onClick"
-            ></v-text-field>
-          </v-card-text> -->
-        <!-- </v-card> -->
       </div>
     </div>
     
@@ -135,6 +120,11 @@ export default {
 }
 div {
   font-family: 'NanumSquareRound';
+}
+
+#box1{
+  padding:10px;
+  margin-bottom:10px;
 }
 .a_right {
   width: 93%;

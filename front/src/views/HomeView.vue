@@ -1,9 +1,12 @@
 <template>
    <div>
+    <div v-if="hero === 'BG'">
+      <img src="@/assets/thx.png" style="width:90%">
+    </div> 
   <div v-if="!isLogin">
     <img src="@/assets/home.png" style="width:90%">
   </div>
-  <div id="at_box" v-if="isLogin">
+  <div id="at_box" v-if="isLogin && hero !== 'BG'">
     <h3>추천 상품 목록</h3>
     <br>
     <hr>
@@ -27,6 +30,7 @@ export default {
   data() {
     return {
       recommend: "",
+      hero : this.$store.state.loginUser.nickname,
     }
   },
   computed:{

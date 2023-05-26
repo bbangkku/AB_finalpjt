@@ -5,6 +5,7 @@
         <div>
           <h4>Number : {{ article?.id }}</h4>
           <h2>TITLE : {{ article?.title }}</h2>
+          <h2>작성자 : {{article?.nickname}}</h2>
         </div>
         <div id="c_button">
           <router-link :to="{ name: 'article_view' }" style="text-decoration: none;">
