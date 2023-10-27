@@ -3,7 +3,6 @@
 # 주제 : 금융 추천 페이지
 
 
-
 ## 참고페이지
 1. [마이뱅크](https://misaving.mibank.me/deposit)
 2. [금융감독원 오픈API](https://finlife.fss.or.kr/finlife/main/contents.do?menuNo=700029)
